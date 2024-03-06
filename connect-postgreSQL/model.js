@@ -14,9 +14,9 @@ module.exports = {
     },
   
     async createPost(post) {
-      const { date, title, body, uuid } = post;
-      const sql = 'INSERT INTO posts (date, title, body, uuid) VALUES ($1, $2, $3, $4) RETURNING *';
-      const result = await db.query(sql, [date, title, body, uuid]);
+      const {date, title, body } = post;
+      const sql = 'INSERT INTO posts (date, title, body) VALUES ($1, $2, $3) RETURNING *';
+      const result = await db.query(sql, [date, title, body]);
       return result.rows[0];
     },
   

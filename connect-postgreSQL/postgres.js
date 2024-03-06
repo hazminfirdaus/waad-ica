@@ -11,8 +11,8 @@ pool.connect((err, client, release) => {
 
   const createPostsTable = `
     CREATE TABLE IF NOT EXISTS posts (
-      id SERIAL PRIMARY KEY NOT NULL,
-      date DATE NOT NULL DEFAULT CURRENT_DATE,
+      id SERIAL PRIMARY KEY,
+      date DATE NOT NULL,
       title VARCHAR(255) NOT NULL,
       body TEXT NOT NULL,
       uuid UUID NOT NULL DEFAULT gen_random_uuid ()

@@ -31,7 +31,7 @@ router.post('/posts', async (req, res) => {
     res.status(201).json(newPost);
   } catch (e) {
     console.error(e);
-    res.status(400).end();
+    res.status(400).json({ "Missing required fields": "date, title, body" });
   }
 });
 
