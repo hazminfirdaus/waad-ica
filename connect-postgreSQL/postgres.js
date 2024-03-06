@@ -9,6 +9,7 @@ pool.connect((err, client, release) => {
     return;
   }
 
+  // Create the posts table
   const createPostsTable = `
     CREATE TABLE IF NOT EXISTS posts (
       id SERIAL PRIMARY KEY,
