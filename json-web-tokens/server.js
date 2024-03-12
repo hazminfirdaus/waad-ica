@@ -6,7 +6,7 @@ const authorize = require('./authorize.js');
 const login = require('./login.js');
 
 app.use(express.json());
-app.use(login);
+app.use('/login', login);
 app.use('/register', login);
 app.use('/api', authorize, api);
 
