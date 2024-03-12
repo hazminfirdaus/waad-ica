@@ -15,7 +15,6 @@ function makeToken(user) {
 // login route
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
-
   try {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password]);
