@@ -7,7 +7,9 @@ const login = require('./login.js');
 
 app.use(express.json());
 app.use(login);
+app.use('/register', login);
 app.use('/api', authorize, api);
+
 
 app.listen(process.env.PORT, () => {
  console.log("Server is listening on port %s", process.env.PORT);
