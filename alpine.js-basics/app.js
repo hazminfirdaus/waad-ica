@@ -6,6 +6,7 @@ document.addEventListener('alpine:init', () => {
       isVisible: true,
       newItem: '',
       items: [],
+      counter: 0,
   
       init() {
         console.log('init');
@@ -24,6 +25,14 @@ document.addEventListener('alpine:init', () => {
           this.items.push(this.newItem);
           this.newItem = '';
         }
+      },
+
+      incrementCounter() {
+        this.counter++;
+      },
+
+      decrementCounter() {
+        this.counter--;
       }
     }));
   });
