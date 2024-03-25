@@ -32,7 +32,9 @@ document.addEventListener('alpine:init', () => {
       },
 
       decrementCounter() {
-        this.counter--;
+        if (this.counter > 0) {
+            this.counter--;
+        }
       }
     }));
   });
