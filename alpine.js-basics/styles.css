@@ -1,3 +1,7 @@
 .red-text {
     color: red;
   }
+
+  .input-placeholder {
+    width: 200px;
+  }

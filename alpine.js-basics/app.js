@@ -35,6 +35,10 @@ document.addEventListener('alpine:init', () => {
         if (this.counter > 0) {
             this.counter--;
         }
+      },
+
+      get dynamicPlaceholder() {
+        return `Your message is ${this.myData}`;
       }
     }));
   });
