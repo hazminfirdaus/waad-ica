@@ -1,15 +1,15 @@
 // // VARIABLES SCOPE EXPERIMENT
 
 // // var vs let/const
-// var varVariable = 'I am var';
-// let letVariable = 'I am let';
-// const constVariable = 'I am const';
+var varVariable = 'I am var';
+let letVariable = 'I am let';
+const constVariable = 'I am const';
 
-// (function() {
-//     console.log(varVariable); // Output: I am var
-//     console.log(letVariable); // Output: I am let
-//     console.log(constVariable); // Output: I am const
-// })();
+(function() {
+    console.log(varVariable); // Output: I am var
+    console.log(letVariable); // Output: I am let
+    console.log(constVariable); // Output: I am const
+})();
 
 // // Variables inside if block
 // if (true) {
@@ -52,9 +52,9 @@
 // EVENT HANDLING METHODS
 
 // Method 1: Using addEventListener with regular function
-// hello.addEventListener('click', function() {
-//     console.log(this); // Refers to the button element
-// });
+hello.addEventListener('click', function() {
+    console.log(this); // Refers to the button element
+});
 
 // Method 2: Using addEventListener with arrow function
 // hello.addEventListener('click', () => {
