@@ -4,12 +4,18 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.7/dist/cdn.min.js"></script>
+ <style>
+    .red-text {
+      color: red;
+    }
+  </style>
  <title>Alpine Basics</title>
 </head>
+
 <body>
 
 <div x-data="foo" x-cloak>
- <p x-text="myData" x-show="isVisible"></p>
+ <p :class="{ 'red-text': myData == 'Hello Alpine.js!'}" x-text="myData" x-show="isVisible"></p>
  <input type="text" x-model="myData">
  <button @click="changeData">Click Me</button>
  <button @click="toggleVisibility">Toggle Visibility</button>

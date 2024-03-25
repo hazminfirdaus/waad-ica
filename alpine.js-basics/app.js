@@ -1,3 +1,5 @@
+// Apline basics
+
 document.addEventListener('alpine:init', () => {
     Alpine.data('foo', () => ({
       myData: 'Hello World!',
@@ -16,7 +18,7 @@ document.addEventListener('alpine:init', () => {
       toggleVisibility() {
         this.isVisible = !this.isVisible;
       },
-      
+
       addItem() {
         if (this.newItem.trim() !== '') {
           this.items.push(this.newItem);
