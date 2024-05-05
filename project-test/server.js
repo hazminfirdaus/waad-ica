@@ -14,7 +14,7 @@ app.use(express.static('public'));
 app.use('/user', user);
 
 // Use the authorize middleware for the /api route
-app.use('/api', authorize, api);
+app.use('/api', api);
 
 app.listen(process.env.PORT, () => {
   console.log("Server is listening on port %s", process.env.PORT);

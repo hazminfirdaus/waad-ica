@@ -13,6 +13,10 @@ function makeToken(user) {
 }
 
 // login route
+router.get('/login', (req, res) => {
+  res.redirect('/index.html');
+});
+
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
   try {

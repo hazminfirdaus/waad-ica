@@ -2,6 +2,18 @@ function auth() {
   return {
     username: '',
     password: '',
+    isLoggedIn: false,
+    isLoading: true,
+
+    // async isAuthorized() {
+    //   // Check if token exists in local storage
+    //   return !!localStorage.getItem('token');
+    // },
+
+    async initializeAuth() {
+      this.isLoggedIn = localStorage.getItem('token') !== null;
+      this.isLoading = false;
+    },
 
     async register() {
       if (!this.username || !this.password) {
@@ -41,6 +53,7 @@ function auth() {
         if (response.ok) {
           const data = await response.json();
           localStorage.setItem('token', data.token);
+          this.isLoggedIn = true;
           alert('Login successful!');
         } else {
           alert('Login failed!');
@@ -59,7 +72,7 @@ function auth() {
       }
 
       try {
-        const response = await fetch('/api/hello', {
+        const response = await fetch('/api/admin', {
           method: 'GET',
           headers: {
             'Authorization': token,
@@ -67,8 +80,7 @@ function auth() {
         });
 
         if (response.ok) {
-          const data = await response.json();
-          console.log('Response from protected route:', data);
+          console.log('Response from protected route:', await response.json());
         } else {
           console.error('Error accessing protected route:', response.status);
         }
@@ -79,6 +91,7 @@ function auth() {
 
     logout() {
       localStorage.removeItem('token');
+      this.isLoggedIn = false;
       alert('Logged out successfully!');
     }
   };
