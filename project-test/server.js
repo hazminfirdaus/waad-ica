@@ -4,6 +4,7 @@ const app = express();
 const api = require('./api.js');
 const authorize = require('./authorize.js');
 const user = require('./user.js');
+const book = require('./book.js');
 
 app.use(express.json());
 
@@ -19,3 +20,4 @@ app.use('/api', api);
 app.listen(process.env.PORT, () => {
   console.log("Server is listening on port %s", process.env.PORT);
 });
+

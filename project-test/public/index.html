@@ -8,21 +8,11 @@
 </head>
 <body>
 
-  <h1>Book Catalogues</h1>
-  <form x-on:submit.prevent="register()" id="authForm">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" x-model="username" required><br><br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" x-model="password" required><br><br>
-    <button type="button" x-on:click="register()" id="registerBtn">Register</button>
-    <button type="button" x-on:click="login()" id="loginBtn">Login</button>
-    <button type="button" x-on:click="testProtectedRoute()" id="testRouteBtn">Test Protected Route</button>
-    <button type="button" x-on:click="logout()" id="logoutBtn">Logout</button>
-  </form>
-
-  <div v-if="!isLoading">
-    <div id="bookManagement" x-show="isLoggedIn">
-      <h1>Book Management</h1>
+  <h1>Book Catalogue</h1>
+  <!-- Book Management Section -->
+  <div x-show="isAdmin">
+    <div id="bookManagement">
+      <h2>Book Management</h2>
       <!-- Conditional rendering for management buttons -->
       <div>
         <button @click="toggleEditMode">Toggle Edit Mode</button>
@@ -32,26 +22,53 @@
     </div>
   </div>
 
+<!-- Login/Logout Form -->
+<form x-on:submit.prevent="login()" id="authForm">
+  <button type="button" x-show="isAdmin" x-on:click="logout()" id="logoutBtn">Logout</button>
+</form>
 
-  <!-- <div id="bookEditForm">
-    <h1>Edit Book</h1>
-   
-    <div x-show="isAuthorized() && editMode">
-     
-      <button @click="saveChanges">Save Changes</button>
-      <button @click="cancel">Cancel</button>
+    <div v-if="books.length > 0">
+      <h2>All Books</h2>
+      <ul>
+        <li v-for="book in books" :key="book.uuid">
+          {{ book.title }} by {{ book.author }} ({{ book.genre }})
+        </li>
+      </ul>
     </div>
-  </div> -->
 
-<!-- <div id="bookAddForm">
-    <h1>Add New Book</h1>
-  
-    <div x-show="isAuthorized() && addMode">
-     
-      <button @click="saveNewBook">Save Book</button>  
-      <button @click="cancel">Cancel</button>
-    </div>
-  </div> -->
+  <!-- Add Book Form -->
+  <form x-show="isAddingBook" x-on:submit.prevent="addBook()">
+    <h2>Add New Book</h2>
+    <label for="newTitle">Title:</label>
+    <input type="text" id="newTitle" x-model="newTitle" required><br>
+    <label for="newAuthor">Author:</label>
+    <input type="text" id="newAuthor" x-model="newAuthor" required><br>
+    <label for="newGenre">Genre:</label>
+    <input type="text" id="newGenre" x-model="newGenre" required><br>
+    <button type="submit">Save Book</button>
+    <button type="button" @click="cancelAdd">Cancel</button>
+  </form>
+
+  <!-- Edit Book Form -->
+  <form x-show="isAdmin" x-on:submit.prevent="saveEdit()">
+    <h2>Edit Book</h2>
+    <label for="editTitle">Title:</label>
+    <input type="text" id="editTitle" x-model="editTitle" required><br>
+    <label for="editAuthor">Author:</label>
+    <input type="text" id="editAuthor" x-model="editAuthor" required><br>
+    <label for="editGenre">Genre:</label>
+    <input type="text" id="editGenre" x-model="editGenre" required><br>
+    <button type="submit">Save Changes</button>
+    <button type="button" @click="cancelEdit">Cancel</button>
+  </form>
+
+  <!-- Delete Book Form -->
+  <form x-show="isAdmin" x-on:submit.prevent="deleteBook()">
+    <h2>Delete Book</h2>
+    <p>Are you sure you want to delete "{{ deleteTitle }}"?</p>
+    <button type="submit">Delete</button>
+    <button type="button" @click="cancelDelete">Cancel</button>
+  </form>
 
   <script src="app.js"></script>
 </body>

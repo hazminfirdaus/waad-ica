@@ -1,19 +1,38 @@
+
 function auth() {
   return {
     username: '',
     password: '',
-    isLoggedIn: false,
     isLoading: true,
+    isAdmin: false,
 
-    // async isAuthorized() {
-    //   // Check if token exists in local storage
-    //   return !!localStorage.getItem('token');
-    // },
-
-    async initializeAuth() {
-      this.isLoggedIn = localStorage.getItem('token') !== null;
+    async initializeAuth() { 
       this.isLoading = false;
+      await this.checkAdminStatus();
     },
+
+    async checkAdminStatus() {
+      try {
+        const token = localStorage.getItem('token');
+
+        const response = await fetch('user/is-admin/${this.username}', {
+          method: 'GET',
+          headers: {
+            'Authorization': token,
+          }
+        });
+    
+        if (response.ok) {
+          const data = await response.json();
+          this.isAdmin = data.isAdmin;
+          console.log('User is admin');
+        } else {
+          console.error('User is not admin');
+        }
+      } catch (error) {
+        console.error('Error checking admin status:', error);
+      }
+    },    
 
     async register() {
       if (!this.username || !this.password) {
@@ -53,8 +72,8 @@ function auth() {
         if (response.ok) {
           const data = await response.json();
           localStorage.setItem('token', data.token);
-          this.isLoggedIn = true;
           alert('Login successful!');
+          await this.checkAdminStatus();
         } else {
           alert('Login failed!');
         }
@@ -91,8 +110,8 @@ function auth() {
 
     logout() {
       localStorage.removeItem('token');
-      this.isLoggedIn = false;
       alert('Logged out successfully!');
+      window.location.href = '/login.html';
     }
   };
 }

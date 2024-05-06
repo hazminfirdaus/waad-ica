@@ -14,7 +14,7 @@ function makeToken(user) {
 
 // login route
 router.get('/login', (req, res) => {
-  res.redirect('/index.html');
+  res.redirect('/login.html');
 });
 
 router.post('/login', async (req, res) => {
@@ -31,7 +31,12 @@ router.post('/login', async (req, res) => {
       if (passwordMatch) {
         // Passwords match, generate and send token
         const token = makeToken({ username: user.username });
-        res.json({ token });
+
+        // Check if the user is an admin
+        const isAdminResult = await client.query('SELECT * FROM users u JOIN admins a ON u.id = a.user_id WHERE u.username = $1', [username]);
+        const isAdmin = isAdminResult.rows.length > 0;
+
+        res.json({ token, isAdmin });
       } else {
         // Incorrect password
         res.status(401).end();
@@ -81,4 +86,24 @@ router.post('/register', async (req, res) => {
     }
   });
 
+  router.get('/is-admin/:username', async (req, res) => {
+    const { username } = req.params;
+  
+    try {
+      const client = await pool.connect();
+      
+      // Query the database to check if the user is an admin
+      const result = await client.query('SELECT * FROM users u JOIN admins a ON u.id = a.user_id WHERE u.username = $1', [username]);
+      
+      // If the result contains any rows, the user is an admin
+      const isAdmin = result.rows.length > 0;
+      
+      res.json({ isAdmin });
+  
+      client.release();
+    } catch (error) {
+      console.error('Error checking admin status:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
 module.exports = router;
