@@ -1,39 +1,41 @@
-
 function auth() {
   return {
     username: '',
     password: '',
-    isLoading: true,
+    isLoading: false,
     isAdmin: false,
 
     async initializeAuth() { 
-      this.isLoading = false;
-      await this.checkAdminStatus();
-    },
-
-    async checkAdminStatus() {
+      this.isLoading = true;
+      const token = localStorage.getItem('token');
+      if (!token) {
+        // console.error('JWT token not found in local storage');
+        this.isLoading = false;
+        return;
+      }
+    
       try {
-        const token = localStorage.getItem('token');
-
-        const response = await fetch('user/is-admin/${this.username}', {
-          method: 'GET',
+        const response = await fetch('/user/verify-token', {
+          method: 'POST',
           headers: {
-            'Authorization': token,
+            'Content-Type': 'application/json',
+            'Authorization': token // Include the token in the request headers
           }
         });
-    
+
         if (response.ok) {
           const data = await response.json();
-          this.isAdmin = data.isAdmin;
-          console.log('User is admin');
+          this.isAdmin = data.isAdmin; // Set isAdmin based on the response
         } else {
-          console.error('User is not admin');
+          throw new Error(`Error verifying token: ${response.status}`);
         }
       } catch (error) {
-        console.error('Error checking admin status:', error);
+        console.error('Error verifying token:', error);
+      } finally {
+        this.isLoading = false;
       }
     },    
-
+       
     async register() {
       if (!this.username || !this.password) {
         alert('Please enter both username and password.');
@@ -52,7 +54,7 @@ function auth() {
         if (response.ok) {
           alert('Registration successful!');
         } else {
-          alert('Registration failed!');
+          throw new Error(`Registration failed: ${response.status}`);
         }
       } catch (error) {
         console.error('Error during registration:', error);
@@ -73,9 +75,9 @@ function auth() {
           const data = await response.json();
           localStorage.setItem('token', data.token);
           alert('Login successful!');
-          await this.checkAdminStatus();
+          window.location.href = '/index.html';
         } else {
-          alert('Login failed!');
+          throw new Error(`Login failed: ${response.status}`);
         }
       } catch (error) {
         console.error('Error during login:', error);
@@ -94,20 +96,20 @@ function auth() {
         const response = await fetch('/api/admin', {
           method: 'GET',
           headers: {
-            'Authorization': token,
+            'Authorization': token, // Include the token in the request headers,
           }
         });
 
         if (response.ok) {
           console.log('Response from protected route:', await response.json());
         } else {
-          console.error('Error accessing protected route:', response.status);
+          throw new Error(`Error accessing protected route: ${response.status}`);
         }
       } catch (error) {
         console.error('Error:', error);
       }
     },
-
+  
     logout() {
       localStorage.removeItem('token');
       alert('Logged out successfully!');

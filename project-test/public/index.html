@@ -1,75 +1,124 @@
 <!DOCTYPE html>
-<html lang="en" x-data="auth()">
+<html lang="en" x-data="auth()" x-init="initializeAuth()">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Put Together</title>
-  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Catalogue</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="/css/book.css">
 </head>
 <body>
+    <h1>Book Catalogue</h1>
+    <button type="button" x-show="isAdmin" x-on:click="logout()" id="logoutBtn">Logout</button>
 
-  <h1>Book Catalogue</h1>
-  <!-- Book Management Section -->
-  <div x-show="isAdmin">
-    <div id="bookManagement">
-      <h2>Book Management</h2>
-      <!-- Conditional rendering for management buttons -->
-      <div>
-        <button @click="toggleEditMode">Toggle Edit Mode</button>
-        <button @click="toggleAddMode">Add New Book</button>
-        <!-- Other management buttons -->
-      </div>
+    <div x-data="booksData()">
+        <!-- Button to toggle add new book form -->
+        <button type="button" x-show="isAdmin" @click="toggleAddBookForm()">Add New Book</button>
+        <!-- Button to toggle manage book functionality -->
+        <button type="button" x-show="isAdmin" @click="toggleManageBooks()">Manage Books</button>
+
+        <!-- Add New Book Form -->
+        <div x-show="showAddBookForm && isAdmin">
+            <h2>Add New Book</h2>
+            <form @submit.prevent="addBook">
+                <label for="title">Title:</label>
+                <input type="text" id="title" x-model="newBook.title" required><br>
+                <label for="author">Author:</label>
+                <input type="text" id="author" x-model="newBook.author" required><br>
+                <label for="genre">Genre:</label>
+                <input type="text" id="genre" x-model="newBook.genre" required><br>
+                <button type="submit">Add Book</button>
+            </form>
+        </div>
+        
+        <h2>Book Search</h2>
+        <form x-on:submit.prevent="searchBooks">
+            <input type="text" x-model="searchTerm" @input="searchBooks" placeholder="Search by title or author or genre">
+            <button type="button" @click="clearSearch()">Reset Search</button>
+        </form>
+        <div x-show="searchedBooks.length === 0 && searchTerm.length > 0">
+            <p>No books found</p>
+        </div>
+        <div x-show="searchedBooks.length > 0 && searchTerm.length > 0"> 
+            <h2>Search Results</h2>
+            <div>
+                <h3>You searched for: <span x-text="searchTerm"></span></h3>
+            </div>
+            <div>
+                <h3>Search Results: <span x-text="searchedBooks.length"></span></h3>
+            </div>
+            <ul class="bookList">
+                <template x-for="book in searchedBooks" :key="book.uuid">
+                    <li>
+                        <div class="bookContainer">
+                            <div class="bookItem">
+                                <img :src="book.cover" class="bookCover" alt="Book Cover">
+                                <div class="bookInfo">
+                                    <span class="bookTitle" x-text="book.title"></span> by <span class="bookAuthor" x-text="book.author"></span> 
+                                    (<span class="bookGenre" x-text="book.genre"></span>)
+                                </div>
+                            </div>
+                            <div x-show="showManageBooks && isAdmin" class="manageContainer">
+                                <div x-show="isAdmin">
+                                    <button @click="toggleEditForm(book)">Edit</button>
+                                    <button @click="deleteBook(book)">Delete</button>
+                                </div>
+                                <!-- // Display the edit form when book.isEditing is true -->
+                                <div x-show="book.isEditing">
+                                    <form @submit.prevent="updateBook(book)">
+                                        <input type="text" x-model="book.title" required>
+                                        <input type="text" x-model="book.author" required>
+                                        <input type="text" x-model="book.genre" required>
+                                        <button type="submit">Update</button>
+                                        <button @click="cancelEdit(book)">Cancel</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </template>
+            </ul>        
+        </div>
+
+
+        <!-- // Display All Books -->
+        <div x-init="fetchBooks" x-show="books.length > 0 && !searchTerm.trim()">
+            <h2>All Books</h2>
+            <ul class="bookList">
+                <template x-for="book in books" :key="book.uuid">
+                    <li>
+                        <div class="bookContainer">
+                            <div class="bookItem">
+                                <img :src="book.cover" class="bookCover" alt="Book Cover">
+                                <div class="bookInfo">
+                                    <span class="bookTitle" x-text="book.title"></span> by <span class="bookAuthor" x-text="book.author"></span> 
+                                    (<span class="bookGenre" x-text="book.genre"></span>)
+                                </div>
+                            </div>
+                            <div x-show="showManageBooks && isAdmin" class="manageContainer">
+                                <div x-show="isAdmin">
+                                    <button @click="toggleEditForm(book)">Edit</button>
+                                    <button @click="deleteBook(book)">Delete</button>
+                                </div>
+                                <!-- // Display the edit form when book.isEditing is true -->
+                                <div x-show="book.isEditing">
+                                    <form @submit.prevent="updateBook(book)">
+                                        <input type="text" x-model="book.title" required>
+                                        <input type="text" x-model="book.author" required>
+                                        <input type="text" x-model="book.genre" required>
+                                        <button type="submit">Update</button>
+                                        <button @click="cancelEdit(book)">Cancel</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </template>
+            </ul>            
+        </div>
     </div>
-  </div>
 
-<!-- Login/Logout Form -->
-<form x-on:submit.prevent="login()" id="authForm">
-  <button type="button" x-show="isAdmin" x-on:click="logout()" id="logoutBtn">Logout</button>
-</form>
-
-    <div v-if="books.length > 0">
-      <h2>All Books</h2>
-      <ul>
-        <li v-for="book in books" :key="book.uuid">
-          {{ book.title }} by {{ book.author }} ({{ book.genre }})
-        </li>
-      </ul>
-    </div>
-
-  <!-- Add Book Form -->
-  <form x-show="isAddingBook" x-on:submit.prevent="addBook()">
-    <h2>Add New Book</h2>
-    <label for="newTitle">Title:</label>
-    <input type="text" id="newTitle" x-model="newTitle" required><br>
-    <label for="newAuthor">Author:</label>
-    <input type="text" id="newAuthor" x-model="newAuthor" required><br>
-    <label for="newGenre">Genre:</label>
-    <input type="text" id="newGenre" x-model="newGenre" required><br>
-    <button type="submit">Save Book</button>
-    <button type="button" @click="cancelAdd">Cancel</button>
-  </form>
-
-  <!-- Edit Book Form -->
-  <form x-show="isAdmin" x-on:submit.prevent="saveEdit()">
-    <h2>Edit Book</h2>
-    <label for="editTitle">Title:</label>
-    <input type="text" id="editTitle" x-model="editTitle" required><br>
-    <label for="editAuthor">Author:</label>
-    <input type="text" id="editAuthor" x-model="editAuthor" required><br>
-    <label for="editGenre">Genre:</label>
-    <input type="text" id="editGenre" x-model="editGenre" required><br>
-    <button type="submit">Save Changes</button>
-    <button type="button" @click="cancelEdit">Cancel</button>
-  </form>
-
-  <!-- Delete Book Form -->
-  <form x-show="isAdmin" x-on:submit.prevent="deleteBook()">
-    <h2>Delete Book</h2>
-    <p>Are you sure you want to delete "{{ deleteTitle }}"?</p>
-    <button type="submit">Delete</button>
-    <button type="button" @click="cancelDelete">Cancel</button>
-  </form>
-
-  <script src="app.js"></script>
+    <script src="app.js"></script>
+    <script src="manageBook.js"></script>
 </body>
 </html>

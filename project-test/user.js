@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const verifyToken = require('./authorize');
 const { Pool } = require('pg'); // Import the Pool class from pg
 const bcrypt = require('bcrypt');
 
@@ -10,6 +11,11 @@ const pool = new Pool(JSON.parse(process.env.POSTGRES));
 
 function makeToken(user) {
   return jwt.sign(user, process.env.SECRET, { expiresIn: '12h' });
+}
+
+// Modify the makeToken function to include isAdmin
+function makeTokenWithAdmin(payload, isAdmin) {
+  return jwt.sign({ payload, isAdmin }, process.env.SECRET, { expiresIn: '12h' });
 }
 
 // login route
@@ -29,14 +35,21 @@ router.post('/login', async (req, res) => {
       const passwordMatch = await bcrypt.compare(password, user.password);
 
       if (passwordMatch) {
+
+        // Check if the user is an admin
+        // const isAdminResult = await client.query('SELECT * FROM users u JOIN admins a ON u.id = a.user_id WHERE u.username = $1', [username]);
+        // const isAdmin = isAdminResult.rows.length > 0;
+
+        // const isAdminResult = await client.query('SELECT * FROM users u JOIN admins a ON u.id = a.user_id WHERE u.username = $1', [username]);
+        // const isAdmin = isAdminResult.rows.length > 0;
+
+        // const token = makeTokenWithAdmin({ username: user.username }, isAdmin);
+
+
         // Passwords match, generate and send token
         const token = makeToken({ username: user.username });
 
-        // Check if the user is an admin
-        const isAdminResult = await client.query('SELECT * FROM users u JOIN admins a ON u.id = a.user_id WHERE u.username = $1', [username]);
-        const isAdmin = isAdminResult.rows.length > 0;
-
-        res.json({ token, isAdmin });
+        res.json({ token });
       } else {
         // Incorrect password
         res.status(401).end();
@@ -54,10 +67,10 @@ router.post('/login', async (req, res) => {
 });
 
 
+
 // register route
 router.post('/register', async (req, res) => {
     const { username, password } = req.body;
-  
     try {
       const client = await pool.connect();
   
@@ -86,24 +99,25 @@ router.post('/register', async (req, res) => {
     }
   });
 
-  router.get('/is-admin/:username', async (req, res) => {
-    const { username } = req.params;
-  
+  // Verify token route
+  router.post('/verify-token', verifyToken, async (req, res) => {
     try {
-      const client = await pool.connect();
-      
-      // Query the database to check if the user is an admin
-      const result = await client.query('SELECT * FROM users u JOIN admins a ON u.id = a.user_id WHERE u.username = $1', [username]);
-      
-      // If the result contains any rows, the user is an admin
-      const isAdmin = result.rows.length > 0;
-      
-      res.json({ isAdmin });
+      const token = req.headers['authorization'];
+      const decoded = jwt.verify(token, process.env.SECRET);
+      const username = decoded.username;
   
+      // Query database to check if user is admin
+      const client = await pool.connect();
+      const isAdminQuery = await client.query('SELECT * FROM users u JOIN admins a ON u.id = a.user_id WHERE u.username = $1', [username]);
       client.release();
+  
+      const isAdmin = isAdminQuery.rows.length > 0;
+      res.json({ isAdmin });
     } catch (error) {
-      console.error('Error checking admin status:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      console.error('Error verifying token:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
     }
   });
+  
+
 module.exports = router;

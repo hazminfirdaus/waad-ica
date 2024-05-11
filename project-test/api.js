@@ -1,13 +1,9 @@
-const verifyToken = require('./authorize');
-const authorize = require('./authorize');
+const isAdmin = require('./authorize');
+const verifyToken= require('./authorize');
 const Book  = require('./book')
 const router = require('express').Router();
 
-router.get('/hello', (req, res) => {
-    res.json(["Hello!", req.user]);
-    });
-
-router.get('/admin', (req, res) => {
+router.get('/admin', verifyToken, isAdmin, (req, res) => {
     res.json(["Admin page", req.user]);
     });
 
@@ -22,7 +18,7 @@ router.get('/books', async (req, res) => {
     }
 });
 
-// GET /books/:uuid - Retrieve a single book
+// GET Retrieve a single book by uuid
 router.get('/book/:uuid', async (req, res) => {
     try {
       const book = await Book.getBookByUUID(req.params.uuid);
@@ -35,6 +31,32 @@ router.get('/book/:uuid', async (req, res) => {
       res.status(400).end();
     }
   });
+
+// Route for searching books by title or author
+router.get('/books/search', async (req, res) => {
+  const searchTerm = req.query.term; // Get the search term from the query string
+  try {
+      // Query the database to search for books
+      const books = await Book.searchBooks(searchTerm);
+      res.json(books); // Return the results as JSON
+  } catch (error) {
+      console.error('Error searching books:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+// Route for displaying books by genre
+router.get('/books/genre', async (req, res) => {
+  const genre = req.query.genre; // Get the genre from the query string
+  try {
+      // Query the database to get books by genre
+      const books = await Book.getBooksByGenre(genre);
+      res.json(books); // Return the results as JSON
+  } catch (error) {
+      console.error('Error fetching books by genre:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
 
   // GET /books/id - Retrieve a single book
   // router.get('/books/:id', async (req, res) => {
@@ -58,7 +80,7 @@ router.get('/book/:uuid', async (req, res) => {
   
   
   // POST /books - Add a new book
-  router.post('/book/add', authorize, async (req, res) => {
+  router.post('/book/add', verifyToken, isAdmin, async (req, res) => {
     try {
         const newBook = await Book.addBook(req.body);
         console.log(newBook + " is added");

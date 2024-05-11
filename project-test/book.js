@@ -3,7 +3,7 @@ const db = require('./db');
 module.exports = {
 
     async getAllBooks() {
-        const sql = `SELECT * FROM books`;
+        const sql = `SELECT * FROM books ORDER BY title ASC`;
         const result = await db.query(sql);
         return result.rows;
     },
@@ -39,4 +39,17 @@ module.exports = {
         const result = await db.query(sql, [uuid]);
         return result.rows[0];
     },
+
+    async searchBooks(searchTerm) {
+        const sql = `SELECT * FROM books WHERE title ILIKE $1 OR author ILIKE $1 or genre ILIKE $1 ORDER BY title ASC`;
+        const result = await db.query(sql, [`%${searchTerm}%`]);   
+        return result.rows;
+    },
+
+    async getBooksByGenre(genre) {
+        const sql = `SELECT * FROM books WHERE genre = $1`;
+        const result = await db.query(sql, [genre]);
+        return result.rows;
+    },
+
 };

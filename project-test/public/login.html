@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" x-data="auth()">
+<html lang="en" x-data="auth()" x-init="initializeAuth()">
  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +17,7 @@
         <button type="button" x-on:click="login()" id="loginBtn">Login</button>
         <button type="button" x-on:click="testProtectedRoute()" id="testRouteBtn">Test Protected Route</button>
         <button type="button" x-on:click="logout()" id="logoutBtn">Logout</button>
+        <button type="button" x-on:click="location.href='index.html'" id="homeBtn">Home</button>
       </form>
       
     <script src="app.js"></script>
