@@ -1,4 +1,5 @@
 const db = require('./db');
+const upload = require('./multer');
 
 module.exports = {
 
@@ -14,16 +15,10 @@ module.exports = {
         return result.rows[0];
     },
 
-    // async getBookByID(id) {
-    //     const sql = `SELECT * FROM books WHERE id = $1`;
-    //     const result = await db.query(sql, [id]);
-    //     return result.rows[0];
-    // },
-
     async addBook(book) {
-        const { title, author, genre } = book;
-        const sql = `INSERT INTO books (title, author, genre) VALUES ($1, $2, $3) RETURNING *`;
-        const result = await db.query(sql, [title, author, genre]);
+        const { title, author, genre, cover } = book;
+        const sql = `INSERT INTO books (title, author, genre, cover) VALUES ($1, $2, $3, $4) RETURNING *`;
+        const result = await db.query(sql, [title, author, genre, cover]);
         return result.rows[0];
     },
 
@@ -44,12 +39,6 @@ module.exports = {
         const sql = `SELECT * FROM books WHERE title ILIKE $1 OR author ILIKE $1 or genre ILIKE $1 ORDER BY title ASC`;
         const result = await db.query(sql, [`%${searchTerm}%`]);   
         return result.rows;
-    },
-
-    async getBooksByGenre(genre) {
-        const sql = `SELECT * FROM books WHERE genre = $1`;
-        const result = await db.query(sql, [genre]);
-        return result.rows;
-    },
+    }
 
 };

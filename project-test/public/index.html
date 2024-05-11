@@ -27,10 +27,13 @@
                 <input type="text" id="author" x-model="newBook.author" required><br>
                 <label for="genre">Genre:</label>
                 <input type="text" id="genre" x-model="newBook.genre" required><br>
+                <label for="cover" id="cover">Cover:</label>
+                <input type="file" @change="handleFileChange($event)" accept="image/*" required><br>
                 <button type="submit">Add Book</button>
             </form>
         </div>
         
+        <!-- Book Search -->
         <h2>Book Search</h2>
         <form x-on:submit.prevent="searchBooks">
             <input type="text" x-model="searchTerm" @input="searchBooks" placeholder="Search by title or author or genre">
@@ -52,7 +55,7 @@
                     <li>
                         <div class="bookContainer">
                             <div class="bookItem">
-                                <img :src="book.cover" class="bookCover" alt="Book Cover">
+                                <img :src="getCoverPath(book.cover)" class="bookCover" alt="Book Cover">
                                 <div class="bookInfo">
                                     <span class="bookTitle" x-text="book.title"></span> by <span class="bookAuthor" x-text="book.author"></span> 
                                     (<span class="bookGenre" x-text="book.genre"></span>)
@@ -80,7 +83,6 @@
             </ul>        
         </div>
 
-
         <!-- // Display All Books -->
         <div x-init="fetchBooks" x-show="books.length > 0 && !searchTerm.trim()">
             <h2>All Books</h2>
@@ -89,7 +91,7 @@
                     <li>
                         <div class="bookContainer">
                             <div class="bookItem">
-                                <img :src="book.cover" class="bookCover" alt="Book Cover">
+                                <img :src="getCoverPath(book.cover)" class="bookCover" alt="Book Cover">
                                 <div class="bookInfo">
                                     <span class="bookTitle" x-text="book.title"></span> by <span class="bookAuthor" x-text="book.author"></span> 
                                     (<span class="bookGenre" x-text="book.genre"></span>)

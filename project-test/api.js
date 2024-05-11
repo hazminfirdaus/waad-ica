@@ -1,5 +1,6 @@
 const isAdmin = require('./authorize');
 const verifyToken= require('./authorize');
+const upload = require('./multer');
 const Book  = require('./book')
 const router = require('express').Router();
 
@@ -45,50 +46,23 @@ router.get('/books/search', async (req, res) => {
   }
 });
 
-// Route for displaying books by genre
-router.get('/books/genre', async (req, res) => {
-  const genre = req.query.genre; // Get the genre from the query string
-  try {
-      // Query the database to get books by genre
-      const books = await Book.getBooksByGenre(genre);
-      res.json(books); // Return the results as JSON
-  } catch (error) {
-      console.error('Error fetching books by genre:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
-  }
-});
-
-  // GET /books/id - Retrieve a single book
-  // router.get('/books/:id', async (req, res) => {
-  //   try {
-  //     const id = parseInt(req.params.id);
-      
-  //     if (isNaN(id)) {
-  //       return res.status(400).json({ error: 'Invalid book ID' });
-  //     }
-  
-  //     const bookid = await Book.getBookByID(id);
-  //     if (!bookid) {
-  //       return res.status(404).json({ error: 'Book not found' });
-  //     }
-  //     res.json(book);
-  //   } catch (error) {
-  //     console.error(error);
-  //     res.status(500).json({ error: 'Internal Server Error' });
-  //   }
-  // });
-  
-  
   // POST /books - Add a new book
-  router.post('/book/add', verifyToken, isAdmin, async (req, res) => {
+  router.post('/book/add', verifyToken, isAdmin, upload.single('cover'), async (req, res) => {
     try {
-        const newBook = await Book.addBook(req.body);
+        const { title, author, genre } = req.body;
+        const cover = req.file.path; // Uploaded cover image file path
+
+        // Add the book with cover image
+        const newBook = await Book.addBook({ title, author, genre, cover });
+        
         console.log(newBook + " is added");
         res.status(201).json(newBook);
     } catch (error) {
         console.log("Error: " + error.message);
+        res.status(500).json({ message: 'Internal Server Error' });
     }
   });
+
 
   // PUT /books/:uuid - Update a book
   router.put('/book/update/:uuid', async (req, res) => {

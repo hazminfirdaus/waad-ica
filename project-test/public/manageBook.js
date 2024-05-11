@@ -3,7 +3,7 @@ function booksData() {
         books: [],
         searchTerm: '',
         searchedBooks: [],
-        newBook: { title: '', author: '', genre: '' },
+        newBook: { title: '', author: '', genre: '', cover: null },
         showAddBookForm: false,
         showManageBooks: false,
 
@@ -15,29 +15,48 @@ function booksData() {
             this.showManageBooks = !this.showManageBooks;
         },
 
+        handleFileChange(event) {
+            this.newBook.cover = event.target.files[0]; // Update the cover image file
+        },
+
+        getCoverPath(path) {
+            // Remove the 'public' prefix from the file path
+            return path.replace('public', '');
+        },
+
         async addBook() {
-        
             const token = localStorage.getItem('token');
-
+        
             if (!token) {
-            console.error('JWT token not found in local storage');
-            return;
+                console.error('JWT token not found in local storage');
+                return;
             }
-
+        
+            // Create FormData object to send form data including files
+            const formData = new FormData();
+            formData.append('title', this.newBook.title);
+            formData.append('author', this.newBook.author);
+            formData.append('genre', this.newBook.genre);
+            formData.append('cover', this.newBook.cover); // Add cover image file
+        
             try {
                 const response = await fetch('api/book/add', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json', 
+                        'Application': 'application/json',
                         'Authorization': token,
                     },
-                    body: JSON.stringify(this.newBook)
+                    body: formData // Use FormData object as body
                 });
+        
                 if (!response.ok) {
                     throw new Error('Failed to add book');
                 }
-                // Clear the new book form fields
+        
+                // Clear the new book form fields and cover image
                 this.newBook = { title: '', author: '', genre: '' };
+                this.cover = null;
+        
                 // Fetch the updated list of books
                 this.fetchBooks();
             } catch (error) {
