@@ -96,7 +96,7 @@
                     <li>
                         <div class="bookContainer">
                             <div class="bookItem">
-                                <img :src="getCoverPath(book.cover)" alt="Book Cover" class="bookCover">
+                                <img :src="getCoverPath(book.cover)" alt="Book Cover" class="bookCover" id="XXX">
                                 <div class="bookInfo">
                                     <span class="bookTitle" x-text="book.title"></span> by <span class="bookAuthor" x-text="book.author"></span> 
                                     (<span class="bookGenre" x-text="book.genre"></span>)
@@ -106,7 +106,6 @@
                                 <div x-show="isAdmin">
                                     <button @click="toggleEditForm(book)">Edit</button>
                                     <button @click="deleteBook(book)">Delete</button>
-                                </div>
                                 <!-- Display the edit form when book.isEditing is true -->
                                 <div x-show="book.isEditing && isAdmin">
                                     <form @submit.prevent="updateBook(book)">

@@ -3,7 +3,7 @@ function booksData() {
         books: [],
         searchTerm: '',
         searchedBooks: [],
-        book: { title: '', author: '', genre: '', cover: ''},
+        book: { title: '', author: '', genre: '', cover: null, coverPath: ''},
         newBook: { title: '', author: '', genre: '', cover: null },
         showAddBookForm: false,
         showManageBooks: false,
@@ -21,7 +21,8 @@ function booksData() {
         },
 
         async handleFileChangeEdit(event) {
-                this.book.cover = event.target.files[0]; // Edit the cover image file
+            this.book.coverPath = event.target.files[0]; // Edit the cover image file
+            this.book.cover = await this.getCoverPath(URL.createObjectURL(this.book.coverPath));
         },        
                          
         async getCoverPath(path) {
@@ -91,7 +92,7 @@ function booksData() {
                 formData.append('title', book.title);
                 formData.append('author', book.author);
                 formData.append('genre', book.genre);
-                formData.append('cover', book.cover);
+                formData.append('cover', book.coverPath);
                 
                 const response = await fetch(`/api/book/update/${book.uuid}`, {
                     method: 'PUT',
@@ -134,11 +135,14 @@ function booksData() {
                 // Restore original book data from the books array
                 const originalBook = this.books[index];
                 Object.assign(book, originalBook);
+                // Reset the cover path
+                this.books.cover = originalBook.cover;
+                this.fetchBooks();
             }
             // Hide the edit form
             this.toggleEditForm(book);
         },
-
+        
         async deleteBook(book) {
             // Prompt the user for confirmation
             const isConfirmed = window.confirm(`Are you sure you want to delete ${book.title}?`);
@@ -183,21 +187,6 @@ function booksData() {
 
         async clearSearch() {
             this.searchTerm = ''
-        },
-       
-        async displayBooksByGenre(genre) {
-            try {
-                const response = await fetch(`/api/books/genre?genre=${genre}`);
-                if (response.ok) {
-                    const books = await response.json();
-                    this.books = books;
-                } else {
-                    throw new Error('Failed to fetch books by genre');
-                }
-            } catch (error) {
-                console.error('Error fetching books by genre:', error);
-                alert('Failed to fetch books by genre');
-            }
         },
 
         async fetchBooks() {
