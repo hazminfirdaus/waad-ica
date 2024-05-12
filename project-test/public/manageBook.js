@@ -3,6 +3,7 @@ function booksData() {
         books: [],
         searchTerm: '',
         searchedBooks: [],
+        book: { title: '', author: '', genre: '', cover: ''},
         newBook: { title: '', author: '', genre: '', cover: null },
         showAddBookForm: false,
         showManageBooks: false,
@@ -15,15 +16,26 @@ function booksData() {
             this.showManageBooks = !this.showManageBooks;
         },
 
-        handleFileChange(event) {
-            this.newBook.cover = event.target.files[0]; // Update the cover image file
+        async handleFileChange(event) {
+            this.newBook.cover = event.target.files[0]; // Add the cover image file
         },
 
-        getCoverPath(path) {
+        async handleFileChangeEdit(event) {
+                this.book.cover = event.target.files[0]; // Edit the cover image file
+        },        
+                         
+        async getCoverPath(path) {
+            console.log('Path:', path);
+            // Check if path is null, undefined, or not a string
+            if (!path || typeof path !== 'string') {
+                console.log('Returning empty string');
+                return '';
+            }
             // Remove the 'public' prefix from the file path
+            console.log('Returning processed path:', path.replace('public', ''));
             return path.replace('public', '');
-        },
-
+        },        
+           
         async addBook() {
             const token = localStorage.getItem('token');
         
@@ -65,6 +77,68 @@ function booksData() {
             }
         },
 
+        async updateBook(book) {
+
+            const token = localStorage.getItem('token');
+        
+            if (!token) {
+                console.error('JWT token not found in local storage');
+                return;
+            }
+
+            try {
+                const formData = new FormData();
+                formData.append('title', book.title);
+                formData.append('author', book.author);
+                formData.append('genre', book.genre);
+                formData.append('cover', book.cover);
+                
+                const response = await fetch(`/api/book/update/${book.uuid}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Application': 'application/json',
+                        'Authorization': token,
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update book');
+                }
+                // Update the local books array with the updated book
+                const updatedBook = await response.json();
+                const index = this.books.findIndex(b => b.uuid === book.uuid);
+                if (index !== -1) {
+                    this.books[index] = updatedBook;
+                    this.fetchBooks();
+                }
+
+                alert('Book updated successfully!');
+
+                // Hide the edit form
+                this.toggleEditForm(book);
+                } catch (error) {
+                    console.error('Error updating book:', error);
+                    alert('Failed to update book');
+            }
+        },
+
+        async toggleEditForm(book) {
+            book.isEditing = !book.isEditing;
+        },
+        
+        async cancelEdit(book) {
+            // Reset the book properties to their original values
+            const index = this.books.findIndex(b => b.id === book.id);
+            if (index !== -1) {
+                // Restore original book data from the books array
+                const originalBook = this.books[index];
+                Object.assign(book, originalBook);
+            }
+            // Hide the edit form
+            this.toggleEditForm(book);
+        },
+
         async deleteBook(book) {
             // Prompt the user for confirmation
             const isConfirmed = window.confirm(`Are you sure you want to delete ${book.title}?`);
@@ -86,49 +160,6 @@ function booksData() {
                     alert('Failed to delete book');
                 }
             }
-        },
-
-        async updateBook(book) {
-            try {
-                const response = await fetch(`/api/book/update/${book.uuid}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(book)
-                });
-                if (!response.ok) {
-                    throw new Error('Failed to update book');
-                }
-                // Update the local books array with the updated book
-                const updatedBook = await response.json();
-                const index = this.books.findIndex(b => b.uuid === book.uuid);
-                if (index !== -1) {
-                    this.books[index] = updatedBook;
-                }
-                alert('Book updated successfully!');
-                await this.fetchBooks();
-
-                // Hide the edit form
-                this.toggleEditForm(book);
-            } catch (error) {
-                console.error('Error updating book:', error);
-                alert('Failed to update book');
-            }
-        },
-        toggleEditForm(book) {
-            book.isEditing = !book.isEditing;
-        },
-        cancelEdit(book) {
-            // Reset the book properties to their original values
-            const index = this.books.findIndex(b => b.id === book.id);
-            if (index !== -1) {
-                // Restore original book data from the books array
-                const originalBook = this.books[index];
-                Object.assign(book, originalBook);
-            }
-            // Hide the edit form
-            this.toggleEditForm(book);
         },
 
         async searchBooks() {

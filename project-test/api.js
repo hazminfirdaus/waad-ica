@@ -22,7 +22,7 @@ router.get('/books', async (req, res) => {
 // GET Retrieve a single book by uuid
 router.get('/book/:uuid', async (req, res) => {
     try {
-      const book = await Book.getBookByUUID(req.params.uuid);
+      const book = await Book.getBookByUuid(req.params.uuid);
       if (!book) {
         return res.status(404).json({ error: 'Book not found' });
       }
@@ -33,7 +33,7 @@ router.get('/book/:uuid', async (req, res) => {
     }
   });
 
-// Route for searching books by title or author
+// Route for searching books by title or author or genre
 router.get('/books/search', async (req, res) => {
   const searchTerm = req.query.term; // Get the search term from the query string
   try {
@@ -64,17 +64,36 @@ router.get('/books/search', async (req, res) => {
   });
 
 
-  // PUT /books/:uuid - Update a book
-  router.put('/book/update/:uuid', async (req, res) => {
+  router.put('/book/update/:uuid', verifyToken, isAdmin, upload.single('cover'), async (req, res) => {
     try {
-      const updatedBook = await Book.updateBook(req.params.uuid, req.body);
-      console.log('Book updated:', updatedBook);
-      res.json(updatedBook);
+      const { title, author, genre } = req.body;
+      let cover = null; // Initialize cover to null
+  
+      // Retrieve the existing cover image path from the database
+      const existingBook = await Book.getBookByUuid(req.params.uuid);
+      cover = existingBook.cover; // Assign the existing cover image path
+  
+      // If a file was uploaded, update the cover with the new file path
+      if (req.file) {
+        cover = req.file.path; // Uploaded cover image file path
+      }
+  
+      // Update the book with the new or existing cover image path
+      const updatedBookData = { title, author, genre, cover };
+      const updatedBook = await Book.updateBook(req.params.uuid, updatedBookData);
+  
+      // Fetch the updated book data, including the new cover image path
+      const updatedBookWithCover = await Book.getBookByUuid(req.params.uuid);
+  
+      // Send the updated book data as the response
+      res.json(updatedBookWithCover);
     } catch (e) {
-      console.error(e);
-      res.status(400).end();
+      console.error('Error updating book:', e);
+      res.status(500).json({ message: 'Internal Server Error' });
     }
   });
+  
+
   
   // DELETE /books/:uuid - Delete a book
   router.delete('/book/delete/:uuid', async (req, res) => {

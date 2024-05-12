@@ -67,13 +67,18 @@
                                     <button @click="deleteBook(book)">Delete</button>
                                 </div>
                                 <!-- // Display the edit form when book.isEditing is true -->
-                                <div x-show="book.isEditing">
+                                <div x-show="book.isEditing && isAdmin">
                                     <form @submit.prevent="updateBook(book)">
-                                        <input type="text" x-model="book.title" required>
-                                        <input type="text" x-model="book.author" required>
-                                        <input type="text" x-model="book.genre" required>
-                                        <button type="submit">Update</button>
-                                        <button @click="cancelEdit(book)">Cancel</button>
+                                        <label for="title">Title:</label>
+                                        <input type="text" id="title" x-model="book.title" required><br>
+                                        <label for="author">Author:</label>
+                                        <input type="text" id="author" x-model="book.author" required><br>
+                                        <label for="genre">Genre:</label>
+                                        <input type="text" id="genre" x-model="book.genre" required><br>
+                                        <label for="cover">New Cover:</label>
+                                        <input type="file" id="coverInput" @change="handleFileChangeEdit($event)" accept="image/*"><br>
+                                        <button type="submit">Update Book</button>
+                                        <button type="button" @click="cancelEdit(book)">Cancel</button>
                                     </form>
                                 </div>
                             </div>
@@ -91,7 +96,7 @@
                     <li>
                         <div class="bookContainer">
                             <div class="bookItem">
-                                <img :src="getCoverPath(book.cover)" class="bookCover" alt="Book Cover">
+                                <img :src="getCoverPath(book.cover)" alt="Book Cover" class="bookCover">
                                 <div class="bookInfo">
                                     <span class="bookTitle" x-text="book.title"></span> by <span class="bookAuthor" x-text="book.author"></span> 
                                     (<span class="bookGenre" x-text="book.genre"></span>)
@@ -102,14 +107,19 @@
                                     <button @click="toggleEditForm(book)">Edit</button>
                                     <button @click="deleteBook(book)">Delete</button>
                                 </div>
-                                <!-- // Display the edit form when book.isEditing is true -->
-                                <div x-show="book.isEditing">
+                                <!-- Display the edit form when book.isEditing is true -->
+                                <div x-show="book.isEditing && isAdmin">
                                     <form @submit.prevent="updateBook(book)">
-                                        <input type="text" x-model="book.title" required>
-                                        <input type="text" x-model="book.author" required>
-                                        <input type="text" x-model="book.genre" required>
-                                        <button type="submit">Update</button>
-                                        <button @click="cancelEdit(book)">Cancel</button>
+                                        <label for="title">Title:</label>
+                                        <input type="text" id="title" x-model="book.title" required><br>
+                                        <label for="author">Author:</label>
+                                        <input type="text" id="author" x-model="book.author" required><br>
+                                        <label for="genre">Genre:</label>
+                                        <input type="text" id="genre" x-model="book.genre" required><br>
+                                        <label for="cover">New Cover:</label>
+                                        <input type="file" id="coverInput" @change="handleFileChangeEdit($event)" accept="image/*">
+                                        <button type="submit">Update Book</button>
+                                        <button type="button" @click="cancelEdit(book)">Cancel</button>
                                     </form>
                                 </div>
                             </div>
