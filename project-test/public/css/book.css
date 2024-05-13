@@ -5,7 +5,6 @@
     justify-content: center; /* Center items horizontally */
     align-items: flex-start; /* Center items vertically */
     flex-wrap: wrap; /* Allow books to wrap to the next line */
-
 }
 
 .bookContainer {
@@ -28,6 +27,7 @@
     width: 250px; /* Adjust the width as needed */
     height: auto; /* Maintain aspect ratio */
     border-radius: 5px; /* Add rounded corners to the image */
+    margin-bottom: 10px; /* Add spacing between book cover and text */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow effect */
 }
 
@@ -42,3 +42,28 @@
     align-items: center; /* Center items vertically */
     margin-top: 20px; /* Add spacing between book list and manage container */
 }
+
+.editButton {
+    background-color: #4CAF50; /* Green color for edit button */
+    color: white; /* White text color */
+    padding: 8px 16px; /* Padding around text */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Show pointer cursor on hover */
+    margin-right: 10px; /* Spacing between buttons */
+}
+
+.cancelButton {
+    background-color: #f44336; /* Red color for cancel button */
+    color: white; /* White text color */
+    padding: 8px 16px; /* Padding around text */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Show pointer cursor on hover */
+    margin-right: 10px; /* Spacing between buttons */
+}
+
+.cancelButton:hover {
+    background-color: #d32f2f; /* Darker red color on hover */
+}
+

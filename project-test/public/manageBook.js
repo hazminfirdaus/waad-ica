@@ -78,6 +78,11 @@ function booksData() {
             }
         },
 
+        cancelAddBook() {
+            // Clear the new book form fields and cover image
+            this.newBook = { title: '', author: '', genre: '', cover: null };
+        },
+
         async updateBook(book) {
 
             const token = localStorage.getItem('token');
