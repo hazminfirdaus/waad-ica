@@ -96,7 +96,7 @@ router.get('/books/search', async (req, res) => {
 
   
   // DELETE /books/:uuid - Delete a book
-  router.delete('/book/delete/:uuid', async (req, res) => {
+  router.delete('/book/delete/:uuid', verifyToken, isAdmin, async (req, res) => {
     try {
        // Extract book UUID from the URL params
       const deletedBook = await Book.deleteBook(req.params.uuid);

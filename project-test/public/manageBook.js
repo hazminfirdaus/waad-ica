@@ -26,14 +26,14 @@ function booksData() {
         },        
                          
         async getCoverPath(path) {
-            console.log('Path:', path);
+            // console.log('Path:', path);
             // Check if path is null, undefined, or not a string
             if (!path || typeof path !== 'string') {
-                console.log('Returning empty string');
+                // console.log('Returning empty string');
                 return '';
             }
             // Remove the 'public' prefix from the file path
-            console.log('Returning processed path:', path.replace('public', ''));
+            // console.log('Returning processed path:', path.replace('public', ''));
             return path.replace('public', '');
         },        
            
@@ -144,6 +144,13 @@ function booksData() {
         },
         
         async deleteBook(book) {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                console.error('JWT token not found in local storage');
+                return;
+            }
+            
             // Prompt the user for confirmation
             const isConfirmed = window.confirm(`Are you sure you want to delete ${book.title}?`);
         
@@ -151,7 +158,11 @@ function booksData() {
             if (isConfirmed) {
                 try {
                     const response = await fetch(`/api/book/delete/${book.uuid}`, {
-                        method: 'DELETE'
+                        method: 'DELETE',
+                        headers: {
+                            'Application': 'application/json',
+                            'Authorization': token,
+                        },
                     });
                     if (!response.ok) {
                         throw new Error('Failed to delete book');
