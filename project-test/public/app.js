@@ -118,6 +118,7 @@ function auth() {
   
     logout() {
       localStorage.removeItem('token');
+      localStorage.removeItem('username');
       alert('Logged out successfully!');
       window.location.href = '/login.html';
     }

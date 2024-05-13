@@ -7,9 +7,12 @@ function booksData() {
         newBook: { title: '', author: '', genre: '', cover: null },
         showAddBookForm: false,
         showManageBooks: false,
+        showSearchBooks: true,
 
         async toggleAddBookForm() {
-            this.showAddBookForm = !this.showAddBookForm;
+            this.showAddBookForm = !this.showAddBookForm,
+            this.showSearchBooks = !this.showSearchBooks;
+
         },
 
         async toggleManageBooks() {
