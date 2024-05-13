@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');  /* Import Google Fonts */   
+@import url('color.css');   /* Import color.css */
+@import url('book.css');  /* Import layout.css */
+
+* {
+  box-sizing: border-box;
+}
+
+/* Main layout */
+body {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f4f4f4;
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* .mainContainer {
+  
+  margin: 0 auto;
+  padding: 0 20px;
+} */
+
+h1 {
+    text-align: center;
+}
+
+.username {
+    font-size: 25px;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--primary);
+}
+
+.greet {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.manageBook {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.addForm {
+    display: flex;
+    margin: 20px;
+    padding: 0 20px;
+    /* border: green 1px solid; */
+}
+
+.addItem {
+    margin: 20px;
+    padding: 0 10px;
+    /* border: green 1px solid; */
+}
+
+/* Buttons */
+button {
+    margin: 5px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    margin-right: 10px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="file"] {
+    margin-bottom: 10px;
+}
+
+form[action="updateBook"] {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+

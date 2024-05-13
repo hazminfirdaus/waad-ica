@@ -1,9 +1,14 @@
+function getUsername() {
+  return localStorage.getItem('username');
+}
+
 function auth() {
   return {
     username: '',
     password: '',
     isLoading: false,
     isAdmin: false,
+    getUsername: getUsername(),
 
     async initializeAuth() { 
       this.isLoading = true;
@@ -34,7 +39,7 @@ function auth() {
       } finally {
         this.isLoading = false;
       }
-    },    
+    },
        
     async register() {
       if (!this.username || !this.password) {
@@ -74,6 +79,7 @@ function auth() {
         if (response.ok) {
           const data = await response.json();
           localStorage.setItem('token', data.token);
+          localStorage.setItem('username', this.username);
           alert('Login successful!');
           window.location.href = '/index.html';
         } else {

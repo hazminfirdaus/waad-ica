@@ -8,31 +8,35 @@
 }
 
 .bookContainer {
+    display: flex; /* Use flexbox for book container */
+    flex-direction: column; /* Arrange book items vertically */ 
     width: 300px; /* Adjust the width as needed */
     height: auto; /* Maintain aspect ratio */
-
     padding: 30px; /* Add padding to book container */
     overflow: hidden; /* Hide overflow content */
 }
 
 .bookItem {
+    display: flex; /* Use flexbox for book item */
     flex-direction: column; /* Arrange book cover and text vertically */
     align-items: center; /* Center items horizontally */
     text-align: center; /* Center text */
-
     padding: 10px; /* Add padding to book item */
 }
 
 .bookCover {
-    width: 250px; /* Adjust the width as needed */
+    width: 150px; /* Adjust the width as needed */
     height: auto; /* Maintain aspect ratio */
     border-radius: 5px; /* Add rounded corners to the image */
+    margin-right: 20px;
     margin-bottom: 10px; /* Add spacing between book cover and text */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow effect */
 }
 
 .bookInfo {
     margin-top: 10px; /* Add spacing between book cover and text */
+    font-size: 16px;
+
 }
 
 .manageContainer {
@@ -66,4 +70,3 @@
 .cancelButton:hover {
     background-color: #d32f2f; /* Darker red color on hover */
 }
-

@@ -81,6 +81,7 @@ function booksData() {
         cancelAddBook() {
             // Clear the new book form fields and cover image
             this.newBook = { title: '', author: '', genre: '', cover: null };
+            this.toggleAddBookForm();
         },
 
         async updateBook(book) {
