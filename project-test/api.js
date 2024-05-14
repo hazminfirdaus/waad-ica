@@ -9,15 +9,22 @@ router.get('/admin', verifyToken, isAdmin, (req, res) => {
     });
 
 
-// GET /books - Retrieve all books
+// GET /books - Retrieve all books with pagination
 router.get('/books', async (req, res) => {
-    try {
-        const books = await Book.getAllBooks();
-        res.json(books);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+  try {
+      // Extract pagination parameters from query string or use default values
+      const limit = parseInt(req.query.limit) || 10; // Default limit is 10
+      const offset = parseInt(req.query.offset) || 0; // Default offset is 0
+      
+      // Fetch books from the database with pagination
+      const books = await Book.getAllBooks(limit, offset);
+
+      res.json(books);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
 });
+
 
 // GET Retrieve a single book by uuid
 router.get('/book/:uuid', async (req, res) => {

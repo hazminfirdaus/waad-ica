@@ -40,7 +40,7 @@ h1 {
     font-size: 20px;
     font-weight: 500;
     font-style: italic;
-    color: var(--primary-dark);
+    color: rgba(37, 28, 28, 0.609);
 }
 
 .greet {
@@ -144,6 +144,14 @@ form[action="updateBook"] {
 
 .resetBtn:hover {
     background-color: var(--secondary-light);
+}
+
+.addBtn {
+    background-color: var(--success);
+}
+
+.addBtn:hover {
+    background-color: #218838;
 }
 
 .deleteBtn {
