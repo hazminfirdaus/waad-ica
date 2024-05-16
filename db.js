@@ -34,6 +34,7 @@ pool.connect((err, client, release) => {
       author VARCHAR(255) NOT NULL,
       genre VARCHAR(255) NOT NULL,
       uuid UUID NOT NULL DEFAULT gen_random_uuid()
+      cover VARCHAR(255) NOT NULL
     )`;
 
   client.query(createUsersTable, (err, result) => {
