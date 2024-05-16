@@ -33,7 +33,7 @@ pool.connect((err, client, release) => {
       title VARCHAR(255) NOT NULL,
       author VARCHAR(255) NOT NULL,
       genre VARCHAR(255) NOT NULL,
-      uuid UUID NOT NULL DEFAULT gen_random_uuid()
+      uuid UUID NOT NULL DEFAULT gen_random_uuid(),
       cover VARCHAR(255) NOT NULL
     )`;
 
