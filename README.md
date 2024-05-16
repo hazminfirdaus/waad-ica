@@ -1,3 +1,3 @@
 # waad-class
 
-A repository for class tutorials of Web Application Architecture and Development.
+A repository for ICA of Web Application Architecture and Development.
