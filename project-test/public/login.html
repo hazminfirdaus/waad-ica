@@ -3,22 +3,32 @@
  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Put Together</title>
+    <link rel="icon" href="img/logo.svg">
+    <title>Bookpedia</title>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
     <h1>Login</h1>
-    <form x-on:submit.prevent="register()" id="authForm">
+    <div class="logoContainer">
+      <img src="img/logo.svg" alt="logo" class="logo">
+      <h1>Bookpedia</h1>
+    </div>
+    <div class="container">
+      <form x-on:submit.prevent="login()" id="authForm">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" x-model="username" required><br><br>
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" x-model="password" required><br><br>
-        <button type="button" x-on:click="register()" id="registerBtn">Register</button>
-        <button type="button" x-on:click="login()" id="loginBtn">Login</button>
-        <button type="button" x-on:click="testProtectedRoute()" id="testRouteBtn">Test Protected Route</button>
-        <button type="button" x-on:click="logout()" id="logoutBtn">Logout</button>
-        <button type="button" x-on:click="location.href='index.html'" id="homeBtn">Home</button>
+        <!-- <button type="button" x-on:click="register()" id="registerBtn">Register</button> -->
+        <div class="buttonContainer">
+          <button type="button" x-on:click="location.href='index.html'" id="homeBtn">Home</button>
+          <button type="button" x-on:click="login()" id="loginBtn">Login</button>
+        </div>
+        <!-- <button type="button" x-on:click="testProtectedRoute()" id="testRouteBtn">Test Protected Route</button> -->
+        <!-- <button type="button" x-on:click="logout()" id="logoutBtn">Logout</button> -->
       </form>
+    </div>
       
     <script src="app.js"></script>
 </body>

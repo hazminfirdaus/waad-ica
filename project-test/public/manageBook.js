@@ -11,7 +11,8 @@ function booksData() {
         showSearchBooks: true,
         page: 1,
         totalPages: null,
-        fetchBooks() {
+        
+        async fetchBooks() {
             this.loading = true;
                 fetch(`/api/books?page=${this.page}`)
                     .then(response => response.json())
@@ -28,6 +29,7 @@ function booksData() {
                         alert('Failed to fetch books');
                     });
         },
+        
         checkScroll() {
             const booksContainer = this.$refs.booksContainer;
             if (booksContainer.scrollTop + booksContainer.clientHeight >= booksContainer.scrollHeight) {
@@ -37,8 +39,38 @@ function booksData() {
             }
         },
 
+        async fetchInitialBooks() {
+            this.fetchBooks(10);
+        },
+
+        async fetchBooks(count) {
+            try {
+                // Adjust the backend API to accept parameters for pagination, e.g., '/api/books?limit=10&offset=0'
+                const response = await fetch(`/api/books?limit=${count}&offset=0`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch books');
+                }
+                const books = await response.json();
+                // Initialize the isEditing property for each book
+                this.books = books.map(book => ({ ...book, isEditing: false }));
+            } catch (error) {
+                console.error('Error fetching books:', error);
+            }
+        },
+        
+        async loadMoreBooks() {
+            const container = this.$refs.booksContainer;
+            if (container.scrollTop + container.clientHeight >= container.scrollHeight && !this.loading) {
+                // Load more books only if the user has scrolled to the bottom and loading is not in progress
+                this.loading = true;
+                await this.fetchBooks(10); // Adjust the number of books to load each time
+                this.loading = false;
+            }
+        },
+
         async toggleAddBookForm() {
             this.showAddBookForm = !this.showAddBookForm;
+            this.showSearchBooks = !this.showSearchBooks;
         },
 
         async toggleManageBooks() {
@@ -88,16 +120,22 @@ function booksData() {
                         'Application': 'application/json',
                         'Authorization': token,
                     },
-                    body: formData // Use FormData object as body
+                    body: formData, // Use FormData object as body
                 });
+
+                alert(`${this.newBook.title} is added successfully!`);
         
                 if (!response.ok) {
                     throw new Error('Failed to add book');
                 }
         
                 // Clear the new book form fields and cover image
-                this.newBook = { title: '', author: '', genre: '' };
-                this.newBook.cover = null;
+                this.newBook = { title: '', author: '', genre: '', cover: null};
+                // Reset file input element to display "No file chosen"
+                const fileInput = this.$refs.fileInput;
+                if (fileInput) {
+                    fileInput.value = '';
+                }  
         
                 // Fetch the updated list of books
                 this.fetchBooks();
@@ -110,6 +148,10 @@ function booksData() {
         cancelAddBook() {
             // Clear the new book form fields and cover image
             this.newBook = { title: '', author: '', genre: '', cover: null };
+            const fileInput = this.$refs.fileInput;
+                if (fileInput) {
+                    fileInput.value = '';
+                } 
             this.toggleAddBookForm();
         },
 
@@ -204,7 +246,8 @@ function booksData() {
                     }
                     // Filter out the deleted book from the list of books
                     this.books = this.books.filter(b => b.uuid !== book.uuid);
-                    alert('Book deleted successfully!');
+                    this.searchBooks();
+                    alert(`${this.book.title} is deleted successfully!`);
                 } catch (error) {
                     console.error('Error deleting book:', error);
                     alert('Failed to delete book');
@@ -233,35 +276,6 @@ function booksData() {
 
         async clearSearch() {
             this.searchTerm = ''
-        },
-
-        async fetchInitialBooks() {
-            this.fetchBooks(10);
-        },
-
-        async fetchBooks(count) {
-            try {
-                // Adjust the backend API to accept parameters for pagination, e.g., '/api/books?limit=10&offset=0'
-                const response = await fetch(`/api/books?limit=${count}&offset=0`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch books');
-                }
-                const books = await response.json();
-                // Initialize the isEditing property for each book
-                this.books = books.map(book => ({ ...book, isEditing: false }));
-            } catch (error) {
-                console.error('Error fetching books:', error);
-            }
-        },
-        
-        async loadMoreBooks() {
-            const container = this.$refs.booksContainer;
-            if (container.scrollTop + container.clientHeight >= container.scrollHeight && !this.loading) {
-                // Load more books only if the user has scrolled to the bottom and loading is not in progress
-                this.loading = true;
-                await this.fetchBooks(10); // Adjust the number of books to load each time
-                this.loading = false;
-            }
         }
     };
 }

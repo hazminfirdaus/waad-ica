@@ -8,15 +8,16 @@
 
 /* Main layout */
 body {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 1.6;
-  color: #333;
-  background-color: #f4f4f4;
-  max-width: 1800px;
-  margin-top: 250px;
-  padding: 0 20px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+    max-width: 1800px;
+    margin-top: 260px;
+    margin-left: 50px;
+    padding: 0 20px;
 }
 
 .static-div {
@@ -24,27 +25,37 @@ body {
     top: 0; /* Align to the top of the viewport */
     left: 0; /* Align to the left of the viewport */
     width: 100%; /* Take up full width */
-    background-color: #d4d3d3; /* Background color */
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    color: #484D6D; /* Text color */
+    background-color: #EFE9F4; /* Background color */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
     z-index: 999; /* Ensure the div stays on top of other content */
 }
 
-h1 {
-    text-align: center;
-    margin: 0 auto;
+.logoContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
     padding: 0;
-    height: auto;
+}
+
+.logo {
+    padding-right: 5px;
+    margin: 0;
 }
 
 .username {
     font-size: 20px;
     font-weight: 500;
     font-style: italic;
-    color: rgba(37, 28, 28, 0.609);
+    color: var(--info);
 }
 
 .greet {
-    margin: 0 auto;
+    margin: 0;
     line-height: 5px;
     text-align: center;
 }
@@ -82,12 +93,12 @@ button {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    background-color: #007bff;
+    background-color: var(--secondary);
     color: white;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: var(--secondary-dark)
 }
 
 
@@ -120,7 +131,7 @@ form[action="updateBook"] {
 }
 
 #logoutBtn {
-    background-color: red;
+    background-color: var(--tertiary);
 }
 
 #logoutBtn:hover {
@@ -131,27 +142,69 @@ form[action="updateBook"] {
     display: flex;
     min-width: 450px;
     padding-top: 5px;
+    padding-bottom: 0;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
+.searchForm input {
+    text-align: center;
+    font-size: 15px;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+
+}
+
+.searchForm input:hover {
+    background-color: #f9f9f9;
+}
+
+.searchResult {
+    display: flex;
+    padding: 5px;
+    margin: 2px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #ffffff;
+
+}
+
+.searchResult span {
+    margin-right: 20px;
+}
+
+.resultText {
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--primary);
+}
+
+.noResultText {
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--tertiary);
+}
+
 .resetBtn {
     background-color: var(--secondary);
     margin: 0 auto;
-    padding: 10px;
+    padding: 8px 10px;
 }
 
 .resetBtn:hover {
-    background-color: var(--secondary-light);
+    background-color: var(--secondary-dark);
 }
 
 .addBtn {
-    background-color: var(--success);
+    margin: 0; /* Remove default margin */
+    background-color: var(--primary);
 }
 
 .addBtn:hover {
-    background-color: #218838;
+    background-color: var(--primary-dark);
 }
 
 .deleteBtn {
@@ -160,4 +213,12 @@ form[action="updateBook"] {
 
 .deleteBtn:hover {
     background-color: darkred;
+}
+
+.updateBtn {
+    margin: 0; /* Remove default margin */
+}
+
+.cancelBtn {
+    background-color: var(--tertiary);
 }

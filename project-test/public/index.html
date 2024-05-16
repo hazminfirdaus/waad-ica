@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/logo.svg">
     <title>Bookpedia</title>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="/css/book.css">
@@ -11,12 +12,15 @@
 <body>
     <div x-data="booksData()" x-init="fetchInitialBooks()">
         <div class="static-div">
-            <h1>Bookpedia</h1>
+            <div class="logoContainer">
+                <img src="img/logo.svg" alt="logo" class="logo">
+                <h1>Bookpedia</h1>
+            </div>
             <div class="greet"  x-show="!isAdmin">
                 <h4> Welcome, please enter search term by title, author or genre.</h4>
             </div>
             <div x-data="{ username: localStorage.getItem('username') }" class="greet" x-show="isAdmin">
-                <h4>Welcome <span x-text="username" class="username"></span><span x-show="isAdmin">, enjoy managing the book catalogue!</span></h4>
+                <h4>Welcome <span x-text="username" class="username"></span><span>, enjoy managing the book catalogue!</span></h4>
             </div>
             <div class="manageBook">
                 <div>
@@ -30,7 +34,7 @@
                     </div>
                     <form x-on:submit.prevent="searchBooks" x-show="showSearchBooks" class="searchForm">
                         <input type="text" x-model="searchTerm" @input="searchBooks" placeholder="Search by title or author or genre">
-                        <button type="button" @click="clearSearch()" class="resetBtn">Reset Search</button>
+                        <button type="button" @click="clearSearch()" class="resetBtn">Clear Search</button>
                     </form>
 
                     <!-- Add New Book Form -->
@@ -45,7 +49,7 @@
                             <label for="genre">Genre:</label>
                             <input type="text" id="genre" x-model="newBook.genre" required><br>
                             <!-- Input field to select the cover image -->
-                            <input type="file" @change="handleFileChange($event)" accept="image/*" required><br>
+                            <input type="file" @change="handleFileChange($event)" x-ref="fileInput" accept="image/*" required><br>
                             <button type="submit" class="addBtn">Add Book</button>
                             <!-- Button to cancel adding a new book -->
                             <button type="button" @click="cancelAddBook">Cancel</button>
@@ -69,15 +73,18 @@
         
         <!-- Book Search Result-->
         <div x-show="searchedBooks.length === 0 && searchTerm.length > 0">
+            <h2>Search Results</h2>
+            <div class="searchResult">
+                <span>You searched for: <span x-text="searchTerm" class="noResultText"></span></span>
+                <span>Books found: <span x-text="searchedBooks.length" class="noResultText"></span></span>
+            </div>
             <h2>No books found.</h2>
         </div>
         <div x-show="searchedBooks.length > 0 && searchTerm.length > 0"> 
             <h2>Search Results</h2>
-            <div>
-                <h3>You searched for: <span x-text="searchTerm"></span></h3>
-            </div>
-            <div>
-                <h3>Search Results: <span x-text="searchedBooks.length"></span></h3>
+            <div class="searchResult">
+                <span>You searched for: <span x-text="searchTerm" class="resultText"></span></span>
+                <span>Books found: <span x-text="searchedBooks.length" class="resultText"></span></span>
             </div>
             <ul class="bookList">
                 <template x-for="book in searchedBooks" :key="book.uuid">
@@ -86,7 +93,8 @@
                             <div class="bookItem">
                                 <img :src="getCoverPath(book.cover)" class="bookCover" alt="Book Cover">
                                 <div class="bookInfo">
-                                    <span class="bookTitle" x-text="book.title"></span> by <span class="bookAuthor" x-text="book.author"></span> 
+                                    <span class="bookTitle" x-text="book.title"></span> 
+                                    by <span class="bookAuthor" x-text="book.author"></span> 
                                     (<span class="bookGenre" x-text="book.genre"></span>)
                                 </div>
                             </div>
@@ -105,9 +113,9 @@
                                         <label for="genre">Genre:</label>
                                         <input type="text" id="genre" x-model="book.genre" required><br>
                                         <label for="cover">New Cover:</label>
-                                        <input type="file" id="coverInput" @change="handleFileChangeEdit($event)" accept="image/*"><br>
-                                        <button type="submit">Update Book</button>
-                                        <button type="button" @click="cancelEdit(book), toggleEditForm(book)">Cancel</button>
+                                        <input type="file" id="coverInput" @change="handleFileChangeEdit($event)" x-ref="fileInput" accept="image/*"><br>
+                                        <button type="submit" class="updateBtn">Update Book</button>
+                                        <button type="button" @click="cancelEdit(book), toggleEditForm(book)" class="cancelBtn">Cancel</button>
                                     </form>
                                 </div>
                             </div>
@@ -122,7 +130,6 @@
             <h2>All Books</h2>
             <ul class="bookList" x-ref="booksContainer" @scroll="loadMoreBooks">
                 <template x-for="book in books" :key="book.uuid">
-                <!-- <template x-for="(book, index) in books" :key="index"> -->
                     <li>
                         <div class="bookContainer">
                             <div class="bookItem">
@@ -136,6 +143,7 @@
                                 <div x-show="isAdmin">
                                     <button @click="toggleEditForm(book)">Edit</button>
                                     <button @click="deleteBook(book)" class="deleteBtn">Delete</button>
+                                </div>
                                 <!-- Display the edit form when book.isEditing is true -->
                                 <div x-show="book.isEditing && isAdmin">
                                     <form @submit.prevent="updateBook(book)">
@@ -147,8 +155,8 @@
                                         <input type="text" id="genre" x-model="book.genre" required><br>
                                         <label for="cover">New Cover:</label>
                                         <input type="file" id="coverInput" @change="handleFileChangeEdit($event)" accept="image/*">
-                                        <button type="submit">Update Book</button>
-                                        <button type="button" @click="cancelEdit(book)">Cancel</button>
+                                        <button type="submit" class="updateBtn">Update Book</button>
+                                        <button type="button" @click="cancelEdit(book)" class="cancelBtn">Cancel</button>
                                     </form>
                                 </div>
                             </div>
@@ -164,44 +172,3 @@
     <script src="manageBook.js"></script>
 </body>
 </html>
-    <div @scroll="checkScroll()" x-show="books.length > 0 && !searchTerm.trim()">
-        <h2>All Books</h2>
-        <ul class="bookList" x-ref="booksContainer" @scroll="loadMoreBooks">
-            <template x-for="book in books" :key="book.uuid">
-
-                <li>
-                    <div class="bookContainer">
-                        <div class="bookItem">
-                            <img :src="getCoverPath(book.cover)" alt="Book Cover" class="bookCover">
-                            <div class="bookInfo">
-                                <span class="bookTitle" x-text="book.title"></span> by <span class="bookAuthor" x-text="book.author"></span> 
-                                (<span class="bookGenre" x-text="book.genre"></span>)
-                            </div>
-                        </div>
-                        <div x-show="showManageBooks && isAdmin" class="manageContainer">
-                            <div x-show="isAdmin">
-                                <button @click="toggleEditForm(book)">Edit</button>
-                                <button @click="deleteBook(book)" class="deleteBtn">Delete</button>
-  
-                            <div x-show="book.isEditing && isAdmin">
-                                <form @submit.prevent="updateBook(book)">
-                                    <label for="title">Title:</label>
-                                    <input type="text" id="title" x-model="book.title" required><br>
-                                    <label for="author">Author:</label>
-                                    <input type="text" id="author" x-model="book.author" required><br>
-                                    <label for="genre">Genre:</label>
-                                    <input type="text" id="genre" x-model="book.genre" required><br>
-                                    <label for="cover">New Cover:</label>
-                                    <input type="file" id="coverInput" @change="handleFileChangeEdit($event)" accept="image/*">
-                                    <button type="submit">Update Book</button>
-                                    <button type="button" @click="cancelEdit(book)">Cancel</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            </template>
-            <div x-show="loading" class="loading">Loading...</div>
-        </ul>            
-    </div>
-</div> -->

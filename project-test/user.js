@@ -13,11 +13,6 @@ function makeToken(user) {
   return jwt.sign(user, process.env.SECRET, { expiresIn: '12h' });
 }
 
-// Modify the makeToken function to include isAdmin
-function makeTokenWithAdmin(payload, isAdmin) {
-  return jwt.sign({ payload, isAdmin }, process.env.SECRET, { expiresIn: '12h' });
-}
-
 // login route
 router.get('/login', (req, res) => {
   res.redirect('/login.html');
@@ -35,28 +30,17 @@ router.post('/login', async (req, res) => {
       const passwordMatch = await bcrypt.compare(password, user.password);
 
       if (passwordMatch) {
-
-        // Check if the user is an admin
-        // const isAdminResult = await client.query('SELECT * FROM users u JOIN admins a ON u.id = a.user_id WHERE u.username = $1', [username]);
-        // const isAdmin = isAdminResult.rows.length > 0;
-
-        // const isAdminResult = await client.query('SELECT * FROM users u JOIN admins a ON u.id = a.user_id WHERE u.username = $1', [username]);
-        // const isAdmin = isAdminResult.rows.length > 0;
-
-        // const token = makeTokenWithAdmin({ username: user.username }, isAdmin);
-
-
         // Passwords match, generate and send token
         const token = makeToken({ username: user.username });
 
         res.json({ token });
       } else {
         // Incorrect password
-        res.status(401).end();
+        res.status(401).json({ error: 'Incorrect password' });
       }
     } else {
       // User not found
-      res.status(401).end();
+      res.status(401).json({ error: 'User not found' });
     }
 
     client.release();

@@ -67,6 +67,11 @@ function auth() {
     },
 
     async login() {
+      if (!this.username || !this.password) {
+        alert('Please enter both username and password.');
+        return;
+      }
+
       try {
         const response = await fetch('/user/login', {
           method: 'POST',
@@ -86,7 +91,7 @@ function auth() {
           throw new Error(`Login failed: ${response.status}`);
         }
       } catch (error) {
-        console.error('Error during login:', error);
+        alert('Error during login:', error);
       }
     },
 
