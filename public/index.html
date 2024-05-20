@@ -10,16 +10,16 @@
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-    <div x-data="booksData()" x-init="fetchInitialBooks()">
+    <div x-data="booksData()" x-init="fetchInitialBooks(); initializeScrollHandlers()">
         <div class="static-div">
-            <div class="logoContainer">
+            <div class="logoContainer" x-show="!isScrolledDown" x-bind:class="{ 'hidden': isScrolledDown }">
                 <img src="img/logo.svg" alt="logo" class="logo">
                 <h1>Bookpedia</h1>
             </div>
             <div class="greet"  x-show="!isAdmin">
                 <h4> Welcome, please enter search term by title, author or genre.</h4>
             </div>
-            <div x-data="{ username: localStorage.getItem('username') }" class="greet" x-show="isAdmin">
+            <div x-data="{ username: localStorage.getItem('username') }" class="greet" x-show="isAdmin && !isScrolledDown" x-bind:class="{ 'hidden': isScrolledDown }">
                 <h4>Welcome <span x-text="username" class="username"></span><span>, enjoy managing the book catalogue!</span></h4>
             </div>
             <div class="manageBook">
@@ -54,7 +54,7 @@
                             <input type="file" @change="handleFileChange($event)" x-ref="fileInput" accept="image/*" required><br>
                             <button type="submit" class="addBtn">Add Book</button>
                             <!-- Button to cancel adding a new book -->
-                            <button type="button" @click="cancelAddBook">Cancel</button>
+                            <button type="button" @click="cancelAddBook" class="cancelBtn">Cancel</button>
                         </form>
                 </div>
                 <div class="addItem">

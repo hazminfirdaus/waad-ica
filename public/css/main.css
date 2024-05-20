@@ -33,6 +33,22 @@ body {
     background-color: #EFE9F4; /* Background color */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
     z-index: 999; /* Ensure the div stays on top of other content */
+    transition: opacity 0.3s ease-in-out; /* Add transition effect */
+    opacity: 1; /* Initially visible */
+}
+
+
+
+.logoContainer,
+.greet {
+    transition: opacity 0.3s ease-in-out;
+    opacity: 1;
+}
+
+.logoContainer.hidden,
+.greet.hidden {
+    opacity: 0;
+    pointer-events: none;
 }
 
 .logoContainer {
@@ -57,14 +73,17 @@ body {
 
 .greet {
     margin: 0;
-    line-height: 5px;
+    line-height: 2px;
+    padding: 0;
     text-align: center;
+    
 }
 
 .manageBook {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 3px;
 }
 
 .manageItem {
@@ -161,6 +180,7 @@ form[action="updateBook"] {
     text-align: center;
     font-size: 15px;
     width: 100%;
+    margin-top: 5px;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 20px;
@@ -178,7 +198,7 @@ form[action="updateBook"] {
 
 .searchBar .fa-search {
     position: absolute;
-    top: 28%;
+    top: 32%;
     left: 10px;
     transform: translateY(-50%);
     color: #ccc;

@@ -30,7 +30,7 @@ function booksData() {
                     });
         },
         
-        checkScroll() {
+        async checkScroll() {
             const booksContainer = this.$refs.booksContainer;
             if (booksContainer.scrollTop + booksContainer.clientHeight >= booksContainer.scrollHeight) {
                 if (this.page <= this.totalPages) {
