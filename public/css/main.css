@@ -234,7 +234,7 @@ form[action="updateBook"] {
     font-family: "Font Awesome 5 Free";
     font-weight: 800;
     font-size: 12px;
-    margin-left: 10px;
+    margin-left: 9px;
 }
 
 .manageBtn::after {

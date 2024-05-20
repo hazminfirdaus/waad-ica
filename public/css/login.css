@@ -83,7 +83,11 @@ button {
     cursor: pointer;
     background-color: var(--secondary);
     color: #fff;
-    transition: opacity 0.5s ease-in-out;
+    transition: background-color 0.5s ease-in-out;
+}
+
+button:active {
+    transform: scale(0.95);
 }
 
 .buttonContainer {
@@ -91,15 +95,17 @@ button {
     justify-content: space-between;
 }
 
-button:hover {
+.homeBtn:hover {
     background-color: var(--secondary-dark);
-    opacity: 0.6;
 }
 
-button:last-child {
+.loginBtn {
     background-color: var(--primary);
 }
 
-button:last-child:hover {
+.loginBtn:hover {
     background-color: var(--primary-dark);
+
 }
+
+
