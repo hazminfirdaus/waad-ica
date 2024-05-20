@@ -35,7 +35,7 @@
                     <div class="searchBar">
                     <form x-on:submit.prevent="searchBooks" x-show="showSearchBooks" class="searchForm">
                         <i class="fas fa-search"></i>
-                        <input type="text" x-model="searchTerm" @input="searchBooks" placeholder="Search by title or author or genre">
+                        <input type="text" id="search" x-model="searchTerm" @input="searchBooks" placeholder="Search by title or author or genre">
                         <button type="button" @click="clearSearch()" class="resetBtn">Clear Search</button>
                     </form>
                     </div>
@@ -114,7 +114,7 @@
                                         <input type="text" id="author" x-model="book.author" required><br>
                                         <label for="genre">Genre:</label>
                                         <input type="text" id="genre" x-model="book.genre" required><br>
-                                        <label for="cover">New Cover:</label>
+                                        <label for="coverInput">New Cover:</label>
                                         <input type="file" id="coverInput" @change="handleFileChangeEdit($event)" x-ref="fileInput" accept="image/*"><br>
                                         <button type="submit" class="updateBtn">Update Book</button>
                                         <button type="button" @click="cancelEdit(book), toggleEditForm(book)" class="cancelBtn">Cancel</button>
@@ -155,8 +155,8 @@
                                         <input type="text" id="author" x-model="book.author" required><br>
                                         <label for="genre">Genre:</label>
                                         <input type="text" id="genre" x-model="book.genre" required><br>
-                                        <label for="cover">New Cover:</label>
-                                        <input type="file" id="coverInput" @change="handleFileChangeEdit($event)" accept="image/*">
+                                        <label for="newCover">New Cover:</label>
+                                        <input type="file" id="newCover" @change="handleFileChangeEdit($event)" accept="image/*">
                                         <button type="submit" class="updateBtn">Update Book</button>
                                         <button type="button" @click="cancelEdit(book)" class="cancelBtn">Cancel</button>
                                     </form>
