@@ -42,6 +42,19 @@ h1 {
     text-align: center;
 }
 
+.link {
+    text-decoration: none;
+}
+
+.link div {
+    transition: opacity 0.5s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.link div:hover {
+    opacity: 0.8;
+    transform: scale(1.1);
+}
+
 form {
     display: flex;
     flex-direction: column;
@@ -70,7 +83,7 @@ button {
     cursor: pointer;
     background-color: var(--secondary);
     color: #fff;
-    transition: background-color 0.3s;
+    transition: opacity 0.5s ease-in-out;
 }
 
 .buttonContainer {
@@ -80,6 +93,7 @@ button {
 
 button:hover {
     background-color: var(--secondary-dark);
+    opacity: 0.6;
 }
 
 button:last-child {

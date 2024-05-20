@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');  /* Import Google Fonts */   
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');  /* Import Google Fonts */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');  /* Import Font Awesome */
 @import url('color.css');   /* Import color.css */
 @import url('book.css');  /* Import layout.css */
 
@@ -95,12 +96,12 @@ button {
     cursor: pointer;
     background-color: var(--secondary);
     color: white;
+    transition: background-color 0.5s ease-in-out, transform 0.1s ease-in-out;
 }
 
-button:hover {
-    background-color: var(--secondary-dark)
+button:active {
+    transform: scale(0.95);
 }
-
 
 form {
     margin-bottom: 20px;
@@ -138,6 +139,14 @@ form[action="updateBook"] {
     background-color: darkred;
 }
 
+#logoutBtn::after {
+    content: "\f08b";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 800;
+    font-size: 12px;
+    margin-left: 10px;
+}   
+
 .searchForm {
     display: flex;
     min-width: 450px;
@@ -160,6 +169,19 @@ form[action="updateBook"] {
 
 .searchForm input:hover {
     background-color: #f9f9f9;
+}
+
+.searchBar {
+    position: relative;
+}
+
+
+.searchBar .fa-search {
+    position: absolute;
+    top: 28%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #ccc;
 }
 
 .searchResult {
@@ -199,12 +221,33 @@ form[action="updateBook"] {
 }
 
 .addBtn {
-    margin: 0; /* Remove default margin */
+    margin-left: 0;
     background-color: var(--primary);
 }
 
 .addBtn:hover {
     background-color: var(--primary-dark);
+}
+
+.addBtn::after {
+    content: "\f067";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 800;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.manageBtn::after {
+    content: "\f0c9";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 800;
+    font-size: 12px;
+    margin-left: 10px;
+    
+}
+
+.manageBtn:hover {
+    background-color: var(--secondary-dark);
 }
 
 .deleteBtn {
@@ -219,6 +262,14 @@ form[action="updateBook"] {
     margin: 0; /* Remove default margin */
 }
 
+.updateBtn:hover {
+    background-color: var(--secondary-dark);
+}
+
 .cancelBtn {
     background-color: var(--tertiary);
+}
+
+.cancelBtn:hover {
+    background-color: darkred;
 }

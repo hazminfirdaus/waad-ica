@@ -28,15 +28,17 @@
                     <!-- Button to toggle add new book form -->
                     <button type="button" x-show="isAdmin" @click="toggleAddBookForm()" class="addBtn">Add New Book</button>
                     <!-- Button to toggle manage book functionality -->
-                    <button type="button" x-show="isAdmin" @click="toggleManageBooks()">Manage Books</button>
+                    <button type="button" x-show="isAdmin" @click="toggleManageBooks()" class="manageBtn">Manage Books</button>
                     <!-- Logout button -->
                     <button type="button" x-show="isAdmin || username" x-on:click="logout()" id="logoutBtn">Logout</button>
                     </div>
+                    <div class="searchBar">
                     <form x-on:submit.prevent="searchBooks" x-show="showSearchBooks" class="searchForm">
+                        <i class="fas fa-search"></i>
                         <input type="text" x-model="searchTerm" @input="searchBooks" placeholder="Search by title or author or genre">
                         <button type="button" @click="clearSearch()" class="resetBtn">Clear Search</button>
                     </form>
-
+                    </div>
                     <!-- Add New Book Form -->
                 <div x-show="showAddBookForm && isAdmin" class="addForm">
                     <div class="addItem">
@@ -100,7 +102,7 @@
                             </div>
                             <div x-show="showManageBooks && isAdmin" class="manageContainer">
                                 <div x-show="isAdmin">
-                                    <button @click="toggleEditForm(book)">Edit</button>
+                                    <button @click="toggleEditForm(book)" class="manageBtn">Edit</button>
                                     <button @click="deleteBook(book)" class="deleteBtn">Delete</button>
                                 </div>
                                 <!-- // Display the edit form when book.isEditing is true -->
@@ -141,7 +143,7 @@
                             </div>
                             <div x-show="showManageBooks && isAdmin" class="manageContainer">
                                 <div x-show="isAdmin">
-                                    <button @click="toggleEditForm(book)">Edit</button>
+                                    <button @click="toggleEditForm(book)" class="manageBtn">Edit</button>
                                     <button @click="deleteBook(book)" class="deleteBtn">Delete</button>
                                 </div>
                                 <!-- Display the edit form when book.isEditing is true -->
