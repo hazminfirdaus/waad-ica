@@ -9,8 +9,6 @@ function auth() {
     isLoading: false,
     isAdmin: false,
     getUsername: getUsername(),
-    isScrolledDown: false,
-    lastScrollPosition: 0,
 
     async initializeAuth() { 
       this.isLoading = true;
@@ -41,13 +39,6 @@ function auth() {
       } finally {
         this.isLoading = false;
       }
-    },
-
-    async initializeScrollHandlers() {
-      window.addEventListener('scroll', () => {
-        this.isScrolledDown = window.scrollY > this.lastScrollPosition;
-        this.lastScrollPosition = window.scrollY;
-      });
     },
        
     async register() {

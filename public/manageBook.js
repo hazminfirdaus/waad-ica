@@ -11,63 +11,65 @@ function booksData() {
         showSearchBooks: true,
         page: 1,
         totalPages: null,
+        isScrolledDown: false,
+        lastScrollPosition: 0,
+        hasMoreBooks: true,
+
+        async initializeScrollHandlers() {
+            window.addEventListener('scroll', () => {
+              this.isScrolledDown = window.scrollY > this.lastScrollPosition;
+              this.lastScrollPosition = window.scrollY;
+            });
+          },
         
         async fetchBooks() {
-            this.loading = true;
-                fetch(`/api/books?page=${this.page}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        // Append new books to the existing list
-                        this.books.push(...data.books);
-                        this.totalPages = data.totalPages;
-                        this.loading = false;
-                        this.page++;
-                        console.log('Books loaded:', data.books);
-                    })
-                    .catch(error => {
-                        console.error('Error fetching books:', error);
-                        alert('Failed to fetch books');
-                    });
-        },
-        
-        async checkScroll() {
-            const booksContainer = this.$refs.booksContainer;
-            if (booksContainer.scrollTop + booksContainer.clientHeight >= booksContainer.scrollHeight) {
-                if (this.page <= this.totalPages) {
-                    this.fetchBooks();
-                }
+            if (!this.hasMoreBooks) {
+                return;
             }
-        },
 
-        async fetchInitialBooks() {
-            this.fetchBooks(10);
-        },
-
-        async fetchBooks(count) {
+            this.loading = true;
             try {
-                // Adjust the backend API to accept parameters for pagination, e.g., '/api/books?limit=10&offset=0'
-                const response = await fetch(`/api/books?limit=${count}&offset=0`);
+                const response = await fetch(`/api/books?limit=10&offset=${(this.page - 1) * 10}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch books');
                 }
-                const books = await response.json();
+                const data = await response.json(); 
+                this.books.push(...data.books);
+                this.totalPages = data.totalPages;
+
+                // Update has moreBooks flag
+                if (data.books.length < 10 || this.page >= this.totalPages) {
+                    this.hasMoreBooks = false;
+                }
+
+                this.page++;
+                console.log('Books loaded:', data.books);
+ 
                 // Initialize the isEditing property for each book
-                this.books = books.map(book => ({ ...book, isEditing: false }));
+                this.books = this.books.map(book => ({ ...book, isEditing: false }));
             } catch (error) {
                 console.error('Error fetching books:', error);
-            }
-        },
-        
-        async loadMoreBooks() {
-            const container = this.$refs.booksContainer;
-            if (container.scrollTop + container.clientHeight >= container.scrollHeight && !this.loading) {
-                // Load more books only if the user has scrolled to the bottom and loading is not in progress
-                this.loading = true;
-                await this.fetchBooks(10); // Adjust the number of books to load each time
+                alert('Failed to fetch books');
+                this.hasMoreBooks = false;
+            } finally {
                 this.loading = false;
             }
         },
 
+        async fetchInitialBooks() {
+            this.page = 1;
+            this.books = [];
+            await this.fetchBooks();
+        },
+
+        async loadMoreBooks() {
+            const container = this.$refs.booksContainer;
+            // Check if the user has scrolled to the bottom and loading is not in progress
+            if (container.scrollTop + container.clientHeight >= container.scrollHeight && !this.loading) {
+                await this.fetchBooks();
+            }
+        },
+          
         async toggleAddBookForm() {
             this.showAddBookForm = !this.showAddBookForm;
             this.showSearchBooks = !this.showSearchBooks;
@@ -207,16 +209,27 @@ function booksData() {
         
         async cancelEdit(book) {
             // Reset the book properties to their original values
-            const index = this.books.findIndex(b => b.id === book.id);
-            if (index !== -1) {
-                // Restore original book data from the books array
-                const originalBook = this.books[index];
-                Object.assign(book, originalBook);
-                // Reset the cover path
-                this.books.cover = originalBook.cover;
-                // Hide the edit form
-                this.toggleEditForm(book);
-                this.fetchBooks();
+            const originalBook = await this.fetchOriginalBook(book.uuid);
+            // Restore original book data from the books array
+            Object.assign(book, originalBook);
+            // Reset the cover path
+            // this.books.cover = originalBook.cover;
+            book.coverPath = '';
+            // Hide the edit form
+            this.toggleEditForm(book);
+        },
+
+        async fetchOriginalBook(uuid) {
+            try {
+                const response = await fetch(`/api/book/${uuid}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch original book data');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching original book data:', error);
+                alert('Failed to fetch original book data');
+                return null;
             }
         },
         

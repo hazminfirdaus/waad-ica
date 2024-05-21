@@ -293,3 +293,7 @@ form[action="updateBook"] {
 .cancelBtn:hover {
     background-color: darkred;
 }
+
+.infinite-scroll-trigger {
+    height: 10px; /* Adjust the height of the trigger element */
+}

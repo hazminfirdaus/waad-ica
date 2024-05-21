@@ -2,10 +2,16 @@ const db = require('./db');
 
 module.exports = {
 
-    async getAllBooks() {
-        const sql = `SELECT * FROM books ORDER BY title ASC`;
-        const result = await db.query(sql);
+    async getAllBooks(limit, offset) {
+        const sql = `SELECT * FROM books ORDER BY title LIMIT $1 OFFSET $2`;
+        const result = await db.query(sql, [limit, offset]);
         return result.rows;
+    },
+
+    async getCount() {
+        const sql = `SELECT COUNT(*) FROM books`;
+        const result = await db.query(sql);
+        return parseInt(result.rows[0].count);
     },
 
     async getBookByUuid(uuid) {

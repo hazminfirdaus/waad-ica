@@ -117,7 +117,7 @@
                                         <label for="coverInput">New Cover:</label>
                                         <input type="file" id="coverInput" @change="handleFileChangeEdit($event)" x-ref="fileInput" accept="image/*"><br>
                                         <button type="submit" class="updateBtn">Update Book</button>
-                                        <button type="button" @click="cancelEdit(book), toggleEditForm(book)" class="cancelBtn">Cancel</button>
+                                        <button type="button" @click="cancelEdit(book)" class="cancelBtn">Cancel</button>
                                     </form>
                                 </div>
                             </div>
@@ -128,9 +128,9 @@
         </div>
 
         <!-- // Display All Books -->
-        <div @scroll="checkScroll()" x-show="books.length > 0 && !searchTerm.trim()">
+        <div x-show="books.length > 0 && !searchTerm.trim()" class="booksContainer" x-ref="booksContainer" @scroll.window="loadMoreBooks()">
             <h2>All Books</h2>
-            <ul class="bookList" x-ref="booksContainer" @scroll="loadMoreBooks">
+            <ul class="bookList">
                 <template x-for="book in books" :key="book.uuid">
                     <li>
                         <div class="bookContainer">
@@ -164,9 +164,10 @@
                             </div>
                         </div>
                     </li>
+                    <!-- Infinite scroll trigger -->
+                    <div x-show="loading" class="loading">Loading More Books...</div>
                 </template>
-                <div x-show="loading" class="loading">Loading...</div>
-            </ul>            
+            </ul>        
         </div>
     </div>
 

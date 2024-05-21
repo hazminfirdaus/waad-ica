@@ -17,9 +17,11 @@ router.get('/books', async (req, res) => {
       const offset = parseInt(req.query.offset) || 0; // Default offset is 0
       
       // Fetch books from the database with pagination
-      const books = await Book.getAllBooks(limit, offset);
+      const books = await Book.getAllBooks(limit, offset);  // Get all books with pagination
+      const totalBooks = await Book.getCount(); // Get the total number of books in the database
+      const totalPages = Math.ceil(totalBooks / limit); // Calculate the total number of pages
 
-      res.json(books);
+      res.json({ books, totalPages }); // Return the books and total pages as JSON
   } catch (error) {
       res.status(500).json({ error: error.message });
   }
