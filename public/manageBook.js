@@ -22,17 +22,20 @@ function booksData() {
             });
           },
 
-          // Method to add the fade-in class
+        // Method to add the fade-in class
         async addFadeInClass() {
-            // Select all book containers
-            const bookContainers = document.querySelectorAll('.bookContainer');
-            // Add the fade-in class to the last set of newly added books
-            bookContainers.forEach((bookContainer, index) => {
-                setTimeout(() => {
-                    bookContainer.classList.add('fade-in');
-                }, index * 80); // Add a slight delay for a staggered effect
+            // Wait for the DOM to be updated
+            this.$nextTick(() => {
+                // Select all book containers
+                const bookContainers = this.$refs.booksContainer.querySelectorAll('.bookContainer');
+                // Add the fade-in class to each book container with a staggered effect
+                bookContainers.forEach((bookContainer, index) => {
+                    setTimeout(() => {
+                        bookContainer.classList.add('fade-in');
+                    }, index * 50); // Add a slight delay for a staggered effect
+                });
             });
-        },
+        },        
         
         async fetchBooks() {
             if (!this.hasMoreBooks) {
