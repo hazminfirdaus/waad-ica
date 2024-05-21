@@ -68,3 +68,19 @@
 .fade-in {
     animation: fadeIn 0.5s ease-in-out;
 }
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    .bookContainer {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .bookCover {
+        width: 100px;
+    }
+
+    .bookInfo {
+        font-size: 14px;
+    }
+}

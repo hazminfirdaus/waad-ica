@@ -297,3 +297,60 @@ form[action="updateBook"] {
 .infinite-scroll-trigger {
     height: 10px; /* Adjust the height of the trigger element */
 }
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    * {
+        font-size: 12px;
+    }
+
+    body {
+        margin-top: 240px;
+        margin-left: 20px;
+        padding: 0 10px;
+    }
+
+    .logoContainer h1 {
+        font-size: 20px;
+    }
+
+    .searchForm {
+        min-width: 100%;
+    }
+
+    .searchForm input {
+        width: 250px;
+        font-size: 12px;
+    }
+
+    .resultText {
+        font-weight: 400;
+        font-size: 12px;
+    }
+    
+    .noResultText {
+        font-weight: 400;
+        font-size: 12px;
+    }
+
+    .bookContainer {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .bookCover {
+        width: 100px;
+    }
+
+    .username {
+        font-size: 16px;
+    }
+
+    .resetBtn {
+        padding: 5px 10px;
+    }
+
+    .manageItem button {
+        padding: 5px 10px;
+    }
+}

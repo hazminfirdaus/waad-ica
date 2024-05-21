@@ -108,4 +108,15 @@ button:active {
 
 }
 
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 60%;
+        height: auto;
+        padding: 20px;
+    }
 
+    button {
+        width: 35%;
+    }
+}
