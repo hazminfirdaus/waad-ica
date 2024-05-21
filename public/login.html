@@ -17,7 +17,7 @@
     </div>
     </a>
     <div class="container">
-      <form x-on:submit.prevent="login()" id="authForm">
+      <form x-on:submit.prevent="login()" x-on:keydown.enter.prevent="login" id="authForm">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" x-model="username" required><br><br>
         <label for="password">Password:</label>
@@ -25,7 +25,7 @@
         <!-- <button type="button" x-on:click="register()" id="registerBtn">Register</button> -->
         <div class="buttonContainer">
           <button type="button" x-on:click="location.href='index.html'" class="homeBtn">Home</button>
-          <button type="button" x-on:click="login()" class="loginBtn">Login</button>
+          <button type="button" x-on:click="login()" x-on:keydown.enter="login()" class="loginBtn">Login</button>
         </div>
         <!-- <button type="button" x-on:click="testProtectedRoute()" id="testRouteBtn">Test Protected Route</button> -->
         <!-- <button type="button" x-on:click="logout()" id="logoutBtn">Logout</button> -->
