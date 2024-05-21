@@ -21,6 +21,18 @@ function booksData() {
               this.lastScrollPosition = window.scrollY;
             });
           },
+
+          // Method to add the fade-in class
+        async addFadeInClass() {
+            // Select all book containers
+            const bookContainers = document.querySelectorAll('.bookContainer');
+            // Add the fade-in class to the last set of newly added books
+            bookContainers.forEach((bookContainer, index) => {
+                setTimeout(() => {
+                    bookContainer.classList.add('fade-in');
+                }, index * 80); // Add a slight delay for a staggered effect
+            });
+        },
         
         async fetchBooks() {
             if (!this.hasMoreBooks) {
@@ -44,9 +56,14 @@ function booksData() {
 
                 this.page++;
                 console.log('Books loaded:', data.books);
+
+                // Add fade-in class to newly added books
+                this.$nextTick(() => {
+                    this.addFadeInClass();
+                });
  
                 // Initialize the isEditing property for each book
-                this.books = this.books.map(book => ({ ...book, isEditing: false }));
+                // this.books = this.books.map(book => ({ ...book, isEditing: false }));
             } catch (error) {
                 console.error('Error fetching books:', error);
                 alert('Failed to fetch books');
@@ -59,15 +76,8 @@ function booksData() {
         async fetchInitialBooks() {
             this.page = 1;
             this.books = [];
+            this.hasMoreBooks = true;
             await this.fetchBooks();
-        },
-
-        async loadMoreBooks() {
-            const container = this.$refs.booksContainer;
-            // Check if the user has scrolled to the bottom and loading is not in progress
-            if (container.scrollTop + container.clientHeight >= container.scrollHeight && !this.loading) {
-                await this.fetchBooks();
-            }
         },
           
         async toggleAddBookForm() {

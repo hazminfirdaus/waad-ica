@@ -53,3 +53,18 @@
     align-items: center; /* Center items vertically */
     margin-top: 25px; /* Add spacing between book list and manage container */
 }
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Class to trigger the fade-in animation */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}

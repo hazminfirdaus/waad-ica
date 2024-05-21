@@ -128,7 +128,7 @@
         </div>
 
         <!-- // Display All Books -->
-        <div x-show="books.length > 0 && !searchTerm.trim()" class="booksContainer" x-ref="booksContainer" @scroll.window="loadMoreBooks()">
+        <div x-show="books.length > 0 && !searchTerm.trim()" class="booksContainer" x-ref="booksContainer" @scroll.window="fetchBooks()">
             <h2>All Books</h2>
             <ul class="bookList">
                 <template x-for="book in books" :key="book.uuid">
