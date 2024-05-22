@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const verifyToken = require('./authorize');
+const verifyToken = require('../middlewares/authorize');
 const { Pool } = require('pg'); // Import the Pool class from pg
 const bcrypt = require('bcrypt');
 

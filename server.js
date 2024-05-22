@@ -1,8 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const api = require('./api.js');
-const user = require('./user.js');
+const api = require('./routes/api.js');
+const user = require('./routes/user.js');
 
 
 app.use(express.json());

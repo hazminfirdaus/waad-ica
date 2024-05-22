@@ -1,12 +1,13 @@
-const isAdmin = require('./authorize');
-const verifyToken= require('./authorize');
-const upload = require('./multer');
-const Book  = require('./book')
+const isAdmin = require('../middlewares/authorize');
+const verifyToken= require('../middlewares/authorize');
+const upload = require('../middlewares/multer');
+const Book  = require('../models/book')
 const router = require('express').Router();
 
-router.get('/admin', verifyToken, isAdmin, (req, res) => {
-    res.json(["Admin page", req.user]);
-    });
+// Route for testing the API
+// router.get('/admin', verifyToken, isAdmin, (req, res) => {
+//     res.json(["Admin page", req.user]);
+//     });
 
 
 // GET /books - Retrieve all books with pagination
