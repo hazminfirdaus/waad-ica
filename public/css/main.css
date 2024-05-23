@@ -354,6 +354,25 @@ form[action="updateBook"] {
     .resetBtn {
         padding: 5px 10px;
     }
+
+    .addForm {
+        margin: 10px;
+        padding: 0 8px;
+    }
+
+    .addItem {
+        width: 200px;
+        font-size: 12px;
+    }
+
+    .addItem button {
+        padding: 6px 10px;
+        margin: 0;
+    }
+
+    input.fileInput {
+        font-size: 12px;
+    }
 }
 
 @media (max-width: 500px) {
@@ -368,5 +387,24 @@ form[action="updateBook"] {
 
     .searchBar .fa-search {
         left: 110px;
+    }
+
+    .addForm {
+        justify-content: center;
+        padding: 0 5px;
+        width: 450px;
+        margin-left: 20px;
+    }
+
+    .addItem {
+        margin: 8px;
+        padding: 0 5px;
+        width: 160px;
+    }
+
+    .addItem button {
+        padding: 5px 8px;
+        margin: 0;
+        font-size: 12px;
     }
 }
