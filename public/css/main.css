@@ -178,7 +178,7 @@ form[action="updateBook"] {
 
 .searchForm input {
     text-align: center;
-    font-size: 15px;
+    font-size: 16px;
     width: 100%;
     margin-top: 5px;
     padding: 8px;
@@ -304,6 +304,10 @@ form[action="updateBook"] {
         font-size: 12px;
     }
 
+    input {
+        font-size: 16px;
+    }
+
     body {
         margin-top: 240px;
         margin-left: 20px;
@@ -321,7 +325,7 @@ form[action="updateBook"] {
 
     .searchForm input {
         width: 450px;
-        font-size: 12px;
+        font-size: 16px;
     }
 
     .searchBar .fa-search{
