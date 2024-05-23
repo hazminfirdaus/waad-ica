@@ -64,23 +64,10 @@
     }
 }
 
-/* @keyframes slideUp {
-    from {
-        transform: translateY(80%);
-    }
-    to {
-        transform: translateY(0);
-    }
-} */
-
 /* Class to trigger the fade-in animation */
 .fade-in {
     animation: fadeIn 0.5s ease-in-out;
 }
-
-/* .slide-up {
-    animation: slideUp 2s ease-in;
-} */
 
 /* Media Queries for Responsive Design */
 @media (max-width: 768px) {

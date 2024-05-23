@@ -17,10 +17,15 @@ function booksData() {
 
         async initializeScrollHandlers() {
             window.addEventListener('scroll', () => {
-              this.isScrolledDown = window.scrollY > this.lastScrollPosition;
-              this.lastScrollPosition = window.scrollY;
+                const isScrollingDown = window.scrollY > this.lastScrollPosition;
+                this.lastScrollPosition = window.scrollY;
+        
+                // Delay toggling the hidden class by a small amount
+                setTimeout(() => {
+                    this.isScrolledDown = isScrollingDown;
+                },  300); // Adjust the delay time as needed
             });
-          },
+        },        
 
         // Method to add the fade-in class
         async addFadeInClass() {
