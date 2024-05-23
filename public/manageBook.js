@@ -14,6 +14,7 @@ function booksData() {
         isScrolledDown: false,
         lastScrollPosition: 0,
         hasMoreBooks: true,
+        isFetching: false,
 
         async initializeScrollHandlers() {
             window.addEventListener('scroll', () => {
@@ -53,8 +54,12 @@ function booksData() {
                 if (!response.ok) {
                     throw new Error('Failed to fetch books');
                 }
-                const data = await response.json(); 
-                this.books.push(...data.books);
+                const data = await response.json();
+
+                const existingBookUUIDs = this.books.map(book => book.uuid);
+                const filteredBooks = data.books.filter(book => !existingBookUUIDs.includes(book.uuid));
+
+                this.books.push(...filteredBooks);
                 this.totalPages = data.totalPages;
 
                 // Update has moreBooks flag
@@ -78,6 +83,7 @@ function booksData() {
                 this.hasMoreBooks = false;
             } finally {
                 this.loading = false;
+                this.isFetching = false;
             }
         },
 
