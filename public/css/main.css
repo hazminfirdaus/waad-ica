@@ -355,13 +355,11 @@ form[action="updateBook"] {
 @media (max-width: 500px) {
     .searchBar {
         width: 500px;
-        border: red 1px solid;
     }
 
     .searchForm input {
         width: 300px;
         right: 200px;
-        border: blue 1px solid;
     }
 
     .searchBar .fa-search {
