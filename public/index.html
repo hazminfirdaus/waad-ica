@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="img/logo.svg">
+    <link rel="icon" type="image/svg" href="img/logo.svg">
     <title>Bookpedia</title>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="/css/book.css">
@@ -131,7 +131,7 @@
         <div x-show="books.length > 0 && !searchTerm.trim()" class="booksContainer" x-ref="booksContainer" @scroll.window="fetchBooks()">
             <h2>All Books</h2>
             <ul class="bookList">
-                <template x-for="book in books" :key="book.uuid">
+                <template x-for="(book, index) in books" :key="index">
                     <li>
                         <div class="bookContainer">
                             <div class="bookItem">

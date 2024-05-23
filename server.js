@@ -3,12 +3,18 @@ const express = require('express');
 const app = express();
 const api = require('./routes/api.js');
 const user = require('./routes/user.js');
-
+const cors = require('cors');
 
 app.use(express.json());
+app.use(cors());
 
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
+
+app.use((req, res, next) => {
+  res.setHeader('Permissions-Policy', 'your-policy-options-without-compute-pressure');
+  next();
+});
 
 // Use the user routes with a base path '/user'
 app.use('/user', user);
