@@ -70,17 +70,17 @@
 }
 
 /* Media Queries for Responsive Design */
-@media (max-width: 768px) {
-    .bookContainer {
-        width: 100%;
-        padding: 15px;
+@media (max-width: 780px) {
+    .bookInfo {
+        padding: 0;
+        width: 80%;
     }
 
     .bookCover {
-        width: 100px;
+        width: 80px;
     }
 
     .bookInfo {
-        font-size: 14px;
+        font-size: 12px;
     }
 }

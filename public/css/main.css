@@ -41,7 +41,7 @@ body {
 
 .logoContainer,
 .greet {
-    transition: opacity 3s ease-in-out;
+    transition: opacity 1s ease-in-out;
     opacity: 1;
 }
 
@@ -198,7 +198,7 @@ form[action="updateBook"] {
 
 .searchBar .fa-search {
     position: absolute;
-    top: 32%;
+    top: 28px;
     left: 10px;
     transform: translateY(-50%);
     color: #ccc;
@@ -299,7 +299,7 @@ form[action="updateBook"] {
 }
 
 /* Media Queries for Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 780px) {
     * {
         font-size: 12px;
     }
@@ -314,16 +314,18 @@ form[action="updateBook"] {
         font-size: 20px;
     }
 
-    .searchForm {
-        min-width: 100%;
-    }
-
-    .searchForm input {
-        width: 250px;
+    .manageItem button {
+        padding: 6px 12px;
         font-size: 12px;
     }
 
-    .searchBar .fa-search::before {
+    .searchForm input {
+        width: 450px;
+        font-size: 12px;
+    }
+
+    .searchBar .fa-search{
+        top: 26px;
         font-size: 12px;
     }
 
@@ -337,11 +339,6 @@ form[action="updateBook"] {
         font-size: 12px;
     }
 
-    .bookContainer {
-        width: 100%;
-        padding: 15px;
-    }
-
     .bookCover {
         width: 100px;
     }
@@ -353,8 +350,21 @@ form[action="updateBook"] {
     .resetBtn {
         padding: 5px 10px;
     }
+}
 
-    /* .manageItem button {
-        padding: 6px 12px;
-    } */
+@media (max-width: 500px) {
+    .searchBar {
+        width: 500px;
+        border: red 1px solid;
+    }
+
+    .searchForm input {
+        width: 300px;
+        right: 200px;
+        border: blue 1px solid;
+    }
+
+    .searchBar .fa-search {
+        left: 110px;
+    }
 }
