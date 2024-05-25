@@ -1,4 +1,7 @@
-# Bookpedia
+# <picture>
+<img alt="YOUR-ALT-TEXT" src="/public/img/logo.svg">
+</picture> Bookpedia
+
 A repository for ICA of Web Application Architecture and Development.
 
 Live demo: [Bookpedia](http://www.bookpedia.xyz/)
