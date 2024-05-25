@@ -140,7 +140,7 @@ function booksData() {
             formData.append('cover', this.newBook.cover); // Add cover image file
         
             try {
-                const response = await fetch('api/book/add', {
+                const response = await fetch('/api/book/add', {
                     method: 'POST',
                     headers: {
                         'Application': 'application/json',
@@ -148,28 +148,38 @@ function booksData() {
                     },
                     body: formData, // Use FormData object as body
                 });
-
-                alert(`${this.newBook.title} is added successfully!`);
         
                 if (!response.ok) {
                     throw new Error('Failed to add book');
                 }
         
+                const addedBook = await response.json();
+        
+                // Add the new book to the books array
+                this.books.unshift(addedBook); // Add the new book to the beginning of the array
+        
+                alert(`${this.newBook.title} is added successfully!`);
+        
                 // Clear the new book form fields and cover image
-                this.newBook = { title: '', author: '', genre: '', cover: null};
+                this.newBook = { title: '', author: '', genre: '', cover: null };
                 // Reset file input element to display "No file chosen"
                 const fileInput = this.$refs.fileInput;
                 if (fileInput) {
                     fileInput.value = '';
-                }  
+                }
         
-                // Fetch the updated list of books
-                this.fetchBooks();
+                // Add fade-in class to the newly added book
+                this.$nextTick(() => {
+                    const bookContainers = this.$refs.booksContainer.querySelectorAll('.bookContainer');
+                    const newlyAddedBookContainer = bookContainers[0]; // Assuming the new book is at the beginning
+                    newlyAddedBookContainer.classList.add('fade-in');
+                });
+        
             } catch (error) {
                 console.error('Error adding book:', error);
                 alert('Failed to add book');
             }
-        },
+        },        
 
         cancelAddBook() {
             // Clear the new book form fields and cover image
@@ -214,7 +224,7 @@ function booksData() {
                 const index = this.books.findIndex(b => b.uuid === book.uuid);
                 if (index !== -1) {
                     this.books[index] = updatedBook;
-                    this.fetchBooks();
+                    await this.fetchBooks();
                 }
 
                 alert('Book updated successfully!');
