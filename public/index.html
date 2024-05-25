@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg+xml" href="/img/logo.svg">
-    <link rel="icon" type="image/png" sizes="32x32" href="/img/logo-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/img/logo-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/img/logo-180x180.png">
+    <link rel="icon" type="image/svg+xml" href="/img/logo/logo.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/logo/logo-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img//logo/logo-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/logo/logo-180x180.png">
     <title>Bookpedia</title>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="/css/book.css">
@@ -16,7 +16,7 @@
     <div x-data="booksData()" x-init="fetchInitialBooks(); initializeScrollHandlers()">
         <div class="static-div">
             <div class="logoContainer" x-show="!isScrolledDown" x-bind:class="{ 'hidden': isScrolledDown }">
-                <img src="img/logo.svg" alt="logo" class="logo">
+                <img src="img/logo/logo.svg" alt="logo" class="logo">
                 <h1>Bookpedia</h1>
             </div>
             <div class="greet"  x-show="!isAdmin">
