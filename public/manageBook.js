@@ -208,7 +208,7 @@ function booksData() {
                 formData.append('cover', book.coverPath);
                 
                 const response = await fetch(`/api/book/update/${book.uuid}`, {
-                    method: 'PUT',
+                    method: 'PATCH',
                     headers: {
                         'Application': 'application/json',
                         'Authorization': token,

@@ -74,7 +74,7 @@ router.get('/books/search', async (req, res) => {
   });
 
 
-  router.put('/book/update/:uuid', verifyToken, isAdmin, upload.single('cover'), async (req, res) => {
+  router.patch('/book/update/:uuid', verifyToken, isAdmin, upload.single('cover'), async (req, res) => {
     try {
       const { title, author, genre } = req.body;
       let cover = null; // Initialize cover to null
