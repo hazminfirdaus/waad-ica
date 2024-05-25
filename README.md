@@ -2,6 +2,8 @@
 
 A repository for ICA of Web Application Architecture and Development.
 
+<picture> <img alt="homepage" src="/public/img/screenshot/homepage.png"> </picture>
+
 Live demo: [Bookpedia](http://www.bookpedia.xyz/)
 
 ## Application Architechture and Development
