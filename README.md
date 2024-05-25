@@ -1,4 +1,4 @@
-# <picture> <img alt="logo" src="/public/img/logo.svg"> </picture> [Bookpedia](http://www.bookpedia.xyz/)
+# <picture> <img alt="logo" src="/public/img/logo/logo.svg"> </picture> [Bookpedia](http://www.bookpedia.xyz/)
 
 A repository for ICA of Web Application Architecture and Development.
 
