@@ -1,6 +1,7 @@
 # Bookpedia
 A repository for ICA of Web Application Architecture and Development.
-Live demo: ([Bookpedia](http://www.bookpedia.xyz/)
+
+Live demo: [Bookpedia](http://www.bookpedia.xyz/)
 
 ## Development Architechture and Development
 The project started with the design of the endpoints.
