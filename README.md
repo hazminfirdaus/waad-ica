@@ -13,7 +13,7 @@ A repository for ICA of Web Application Architecture and Development.
 
 ***<p align="center"> **Figure 2: Librarian Interface** </p>***
 <p align="center"> 
-  <img width="850" height="450" alt="admin" src="/public/img/screenshot/admin.png">
+  <img alt="admin" src="/public/img/screenshot/admin.png">
 </p>
 
 Live demo: [Bookpedia](http://www.bookpedia.xyz/)
