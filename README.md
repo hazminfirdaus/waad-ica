@@ -2,8 +2,18 @@
 
 A repository for ICA of Web Application Architecture and Development.
 
+<p> Figure 1 below represents the reader interface of Bookpedia. </p>
+
+***<p align="center"> Figure 1: Reader Interface</p>***
 <p align="center"> 
   <img width="850" height="450" alt="homepage" src="/public/img/screenshot/homepage.png">
+</p>
+
+<p> Figure 2 below shows the Librarian interface of Bookpedia.  </p>
+
+***<p align="center"> **Figure 2: Librarian Interface** </p>***
+<p align="center"> 
+  <img width="850" height="450" alt="admin" src="/public/img/screenshot/admin.png">
 </p>
 
 Live demo: [Bookpedia](http://www.bookpedia.xyz/)
