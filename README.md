@@ -1,6 +1,6 @@
 # <picture> <img alt="logo" src="/public/img/logo/logo.svg"> </picture> [Bookpedia](http://www.bookpedia.xyz/)
 
-A repository for ICA of Web Application Architecture and Development.
+[A repository for ICA of Web Application Architecture and Development.](https://github.com/hazminfirdaus/waad-ica)
 
 <p> Figure 1 below represents the reader interface of Bookpedia. </p>
 
