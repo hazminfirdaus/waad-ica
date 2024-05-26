@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
         cb(null, 'public/uploads/');
     },
     filename: function (req, file, cb) {
-        // cb (null, file.originalname);
+        // Unique file naming
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
 });
@@ -15,5 +15,5 @@ const storage = multer.diskStorage({
 // Create a multer instance with the specified storage settings
 const upload = multer({ storage: storage });
 
-// Export the upload function to use it in your route handler
+// Export the upload function to use it in route handler
 module.exports = upload;
