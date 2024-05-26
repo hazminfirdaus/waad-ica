@@ -29,13 +29,13 @@ Once logged in, a librarian can manage the book catalogue through the following 
     
 ## 2 REST API Endpoint Design
 ### i. Public Endpoints (Reader)
-  - ***GET `/api/books`:*** Retrieve a list of books with title, author, genre, cover
-  - ***GET `/api/books/:uuid`:*** Retrieve a particular book by UUID.
+  - ***`GET /api/books`:*** Retrieve a list of books with title, author, genre, cover
+  - ***`GET /api/books/:uuid`:*** Retrieve a particular book by UUID.
 
 ### ii. Protected Endpoints (Librarian)
-  - ***POST  `/api/books/add`:*** Add a new book to the catalogue. Requires authentication.
-  - ***PATCH `/api/books/update`:*** Updates details of existing books. Requires authentication.
-  - ***DELETE `/api/books/delete`:*** Remove a book from the catalogue. Requires authentication.
+  - ***`POST  /api/books/add`:*** Add a new book to the catalogue. Requires authentication.
+  - ***`PATCH /api/books/update`:*** Updates details of existing books. Requires authentication.
+  - ***`DELETE /api/books/delete`:*** Remove a book from the catalogue. Requires authentication.
 
 ### iii. Login (Librarian)
   - ***POST `/user/login`:*** An endpoint to handle user login for librarian.
