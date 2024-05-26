@@ -51,7 +51,7 @@ A week of break for a family holiday is also noted as the grey section in the ch
 
 
 <p align="center">
-  <img width="990" height="450" src="/public/img/screenshot/bookpedia-gantt.png">
+  <img src="/public/img/screenshot/bookpedia-gantt.png">
 </p>
 
 ### Preliminary Project Plan
