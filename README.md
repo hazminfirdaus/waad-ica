@@ -130,3 +130,80 @@ The Bookpedia web application has provided a great lesson value throughout the p
     The books are being fetched in arrays with initial fetch of 10 books and the next array is appended to the existing list by comparing uuids to avoid duplicates.
     As users scroll down the arrays being fetched continuouly until there are no more books to be display. Infinite scroll would prevent users from experiencing any sigificant delays from fetching the entire book list at once.
   - Implemented middleware and structured error handling in Express.js.
+
+## 3. Update: Disk Space Monitoring & Log Management
+
+### Overview
+This section provides best practices for monitoring disk space and managing logs on a Linux server to prevent storage-related downtime. Regular maintenance ensures the application runs smoothly without interruptions due to insufficient disk space.
+
+### 1. Checking Disk Space Usage
+To monitor disk usage, run the following command:
+```bash
+df -h
+```
+This will display disk usage in a human-readable format.
+
+To find large files consuming space:
+```bash
+sudo du -ahx / | sort -rh | head -20
+```
+
+### 2. Cleaning Up Log Files
+System logs can accumulate and consume disk space. Use the following commands to remove old logs:
+```bash
+sudo journalctl --vacuum-size=500M  # Limit journal logs to 500MB
+sudo rm -rf /var/log/*.log          # Delete old logs
+sudo rm -rf /var/log/journal/*      # Clear journal logs
+```
+
+### 3. Enabling Automatic Log Rotation
+To automatically manage log files, configure **logrotate**:
+```bash
+sudo nano /etc/logrotate.conf
+```
+Modify or add the following settings:
+```
+weekly
+rotate 4
+create
+compress
+```
+- `weekly` → Rotates logs every week.
+- `rotate 4` → Keeps only the last 4 logs.
+- `compress` → Compresses older logs.
+
+Save and exit (`CTRL+X`, then `Y`, then `Enter`).
+
+### 4. Removing Unused Packages and Cache
+Free up disk space by removing unnecessary packages:
+```bash
+sudo apt autoremove -y
+sudo apt clean
+```
+
+### 5. Automating Disk Cleanup with Cron Jobs
+To run automatic cleanup tasks, add a cron job:
+```bash
+sudo crontab -e
+```
+Add this line at the bottom to clean logs every Monday at 3 AM:
+```
+0 3 * * 1 journalctl --vacuum-size=500M && apt autoremove -y && apt clean
+```
+Save and exit.
+
+### 6. Monitoring Disk Usage with Alerts
+To receive an email alert when disk usage exceeds 90%, edit your crontab:
+```bash
+sudo crontab -e
+```
+Add this line:
+```
+0 * * * * df -h | awk '$5 >= 90 {print "Disk space alert: "$0}' | mail -s "Disk Space Alert" your-email@example.com
+```
+This will send an alert every hour if disk usage exceeds 90%.
+
+### Conclusion
+By implementing these disk space monitoring and log management practices, storage issues are prevented, improve server reliability, and ensure uninterrupted application performance. Disk usage is regularly checked and cleanup tasks are automated to maintain a healthy system.
+
+
